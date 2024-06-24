@@ -1,5 +1,6 @@
 import z from "zod";
 import { TypeIcon, TextIcon, SquareCheckIcon, HashIcon } from "lucide-react";
+import { FormField } from "./form";
 
 export const fieldType = z.enum([
   "short-input",

@@ -1,9 +1,11 @@
 import z from "zod";
+import { FieldType } from "./form-elements";
 
 const field = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("input"),
     inputType: z.enum(["short-input", "long-input"]),
+    placeholder: z.string(),
   }),
   z.object({
     type: z.literal("checkbox"),
@@ -12,6 +14,7 @@ const field = z.discriminatedUnion("type", [
     type: z.literal("number-input"),
     min: z.number().optional(),
     max: z.number().optional(),
+    placeholder: z.string(),
   }),
   z.object({
     type: z.literal("select"),
@@ -23,21 +26,22 @@ const field = z.discriminatedUnion("type", [
   }),
 ]);
 
-const form = z
-  .object({
-    field,
-    name: z.string(),
-    required: z.boolean(),
-    placeholder: z.string().optional(),
-  })
-  .array();
+const formField = z.object({
+  field,
+  name: z.string(),
+  required: z.boolean(),
+});
+export type FormField = z.infer<typeof formField>;
 
+const form = formField.array();
 export type Form = z.infer<typeof form>;
 
-export const generateValidationSchema = (formSchema: Form) => {
+export const generateValidationSchema = (
+  formSchema: Record<string, FormField>
+) => {
   let validationSchema = z.object({});
 
-  for (const { field, name, required } of formSchema) {
+  for (const [id, { field, required }] of Object.entries(formSchema)) {
     let validation;
     if (field.type === "input") {
       validation =
@@ -62,10 +66,65 @@ export const generateValidationSchema = (formSchema: Form) => {
 
     if (validation) {
       validationSchema = validationSchema.extend({
-        [name]: required ? validation : validation.optional(),
+        [id]: required ? validation : validation.optional(),
       });
     }
   }
 
   return validationSchema;
+};
+
+export const generateInitialFieldData = (type: FieldType) => {
+  let initialData: FormField;
+  switch (type) {
+    case "short-input": {
+      initialData = {
+        name: "Field Name",
+        field: {
+          type: "input",
+          inputType: "short-input",
+          placeholder: "Short text response",
+        },
+        required: false,
+      };
+      break;
+    }
+    case "long-input": {
+      initialData = {
+        name: "Field Name",
+        field: {
+          type: "input",
+          inputType: "long-input",
+          placeholder: "Long text response",
+        },
+        required: false,
+      };
+      break;
+    }
+    case "checkbox": {
+      initialData = {
+        name: "Field Name",
+        field: {
+          type: "checkbox",
+        },
+        required: false,
+      };
+      break;
+    }
+    case "number-input": {
+      initialData = {
+        name: "Field Name",
+        field: {
+          type: "number-input",
+          placeholder: "1234567890",
+        },
+        required: false,
+      };
+      break;
+    }
+    default:
+      throw new Error(`Unsupported field type: ${type}`);
+  }
+
+  return initialData;
 };

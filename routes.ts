@@ -6,7 +6,7 @@ export const publicRoutes: string[] = ["/", "/auth/new-verification"];
 
 /**
  * An array of routes that are used for authentication
- * These routes will redirect logged in users to /dashboard
+ * These routes will redirect logged in users to /forms
  */
 
 export const authRoutes: string[] = [
@@ -27,4 +27,4 @@ export const apiAuthPrefix = "/api/auth";
  * The default redirect path after logging in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+export const DEFAULT_LOGIN_REDIRECT = "/forms";
