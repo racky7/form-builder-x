@@ -8,7 +8,7 @@ import invariant from "tiny-invariant";
 
 export type FormBuilderContextType = {
   fieldsSchema: Record<string, FormField>;
-  addFieldSchema: (type: FieldType) => void;
+  addFieldSchema: (type: FieldType, index: number) => void;
 
   fieldsOrder: string[];
 
@@ -31,13 +31,17 @@ export const FormBuilderContextProvider = ({
   const [fieldsOrder, setFieldsOrder] = useState<string[]>([]);
   const [activeField, setActiveField] = useState<string | undefined>(undefined);
 
-  const addFieldSchema = (type: FieldType) => {
+  const addFieldSchema = (type: FieldType, index: number) => {
     const fieldId = uid();
     setFieldsSchema((prev) => ({
       ...prev,
       [fieldId]: generateInitialFieldData(type),
     }));
-    setFieldsOrder((prev) => [...prev, fieldId]);
+    setFieldsOrder((prev) => {
+      const currentOrder = [...prev];
+      currentOrder.splice(index, 0, fieldId);
+      return currentOrder;
+    });
     setActiveField(fieldId);
   };
   const updateFieldSchema = () => {};

@@ -8,14 +8,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 export default function FieldEditorPane() {
   const { activeField } = useFormBuilderContext();
-  if (!activeField) {
-    return (
-      <div className="w-72 h-full p-4 text-sm">
-        Select an field to edit its content
-      </div>
-    );
-  }
-  return (
+
+  return activeField ? (
     <div className="w-72 h-fit p-4 text-sm grid space-y-8">
       <div className="space-y-2">
         <Label>Question</Label>
@@ -39,6 +33,10 @@ export default function FieldEditorPane() {
           </p>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className="w-72 h-full flex items-center justify-center p-4 text-xs">
+      Select an field to edit its content
     </div>
   );
 }

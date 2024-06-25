@@ -7,6 +7,8 @@ import { useFormBuilderContext } from "../context";
 import { P, match } from "ts-pattern";
 import invariant from "tiny-invariant";
 import { Textarea } from "@/components/ui/textarea";
+import { Fragment } from "react";
+import FieldDroppable from "./field-droppable";
 
 type EditorAreaProps = {
   className?: string;
@@ -14,52 +16,57 @@ type EditorAreaProps = {
 
 export default function EditorArea({ className }: EditorAreaProps) {
   const { fieldsOrder, fieldsSchema } = useFormBuilderContext();
-  console.log(fieldsOrder);
+  console.log("fields order here - ", fieldsOrder);
+
   return (
     <div
       className={cn(className, "flex flex-col space-y-3 w-3/4 lg:w-full pt-3")}
     >
-      {fieldsOrder.map((fieldId) => {
+      {fieldsOrder.map((fieldId, index) => {
         const { field, required } = fieldsSchema[fieldId];
         return (
-          <>
-            {match(field.type)
-              .returnType<React.ReactNode>()
-              .with("input", () => {
-                invariant(field.type === "input");
-                return match(field.inputType)
-                  .returnType<React.ReactNode>()
-                  .with("short-input", () => {
-                    return (
-                      <FieldCard key={fieldId} fieldId={fieldId}>
+          <Fragment key={fieldId}>
+            <FieldDroppable size="slot" index={index} />
+            <FieldCard key={fieldId} fieldId={fieldId}>
+              {match(field.type)
+                .returnType<React.ReactNode>()
+                .with("input", () => {
+                  invariant(field.type === "input");
+                  return match(field.inputType)
+                    .returnType<React.ReactNode>()
+                    .with("short-input", () => {
+                      return (
                         <Input
                           placeholder={field.placeholder}
                           readOnly
                           required={required}
                           className="select-none pointer-events-none"
                         />
-                      </FieldCard>
-                    );
-                  })
-                  .with("long-input", () => {
-                    return (
-                      <FieldCard key={fieldId} fieldId={fieldId}>
+                      );
+                    })
+                    .with("long-input", () => {
+                      return (
                         <Textarea
                           placeholder={field.placeholder}
                           readOnly
                           required={required}
                           className="select-none pointer-events-none"
                         />
-                      </FieldCard>
-                    );
-                  })
-                  .exhaustive();
-              })
-              .with(P._, () => null)
-              .exhaustive()}
-          </>
+                      );
+                    })
+                    .exhaustive();
+                })
+                .with(P._, () => null)
+                .exhaustive()}
+            </FieldCard>
+          </Fragment>
         );
       })}
+      {fieldsOrder.length === 0 ? (
+        <FieldDroppable size="full-size" index={0} />
+      ) : (
+        <FieldDroppable size="slot" index={fieldsOrder.length} />
+      )}
       <div className="p-1"></div>
     </div>
   );
