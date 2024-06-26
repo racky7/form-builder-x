@@ -39,7 +39,7 @@ export default function RegisterForm() {
 
   return (
     <CardWrapper
-      headerLabel="Welcome to Auth"
+      headerLabel="Create a new account"
       backbuttonhref="/auth/login"
       backbuttonlabel="Already have an account?"
     >

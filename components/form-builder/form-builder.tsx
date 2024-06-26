@@ -10,6 +10,7 @@ import { useCallback } from "react";
 import EditorAreaDroppable from "./components/editor-area-droppable";
 import ElementCardOverlay from "./components/element-card-overlay";
 import { FieldType } from "@/lib/form-elements";
+import { collisonDetection } from "@/lib/dnd";
 
 function BuilderArea() {
   const { addFieldSchema } = useFormBuilderContext();
@@ -34,7 +35,10 @@ function BuilderArea() {
   );
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext
+      onDragEnd={handleDragEnd}
+      collisionDetection={collisonDetection}
+    >
       <div className="w-full h-screen flex flex-col">
         <Navbar />
         <div className="flex-1 flex overflow-y-auto">

@@ -32,14 +32,13 @@ export default function LoginForm() {
     startTransition(() => {
       login(values).then((data) => {
         console.log(data);
-        
       });
     });
   };
 
   return (
     <CardWrapper
-      headerLabel="Welcome back"
+      headerLabel="Sign in to your account"
       backbuttonhref="/auth/register"
       backbuttonlabel="Don't have an account?"
     >

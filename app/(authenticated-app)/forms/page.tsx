@@ -5,7 +5,7 @@ export default async function DashboardPage() {
   const session = await auth();
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full bg-gray-100">
       <div className="flex justify-between p-4 border-b">
         <div className="text-2xl">Form Builder</div>
         <form

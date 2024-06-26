@@ -16,7 +16,6 @@ type EditorAreaProps = {
 
 export default function EditorArea({ className }: EditorAreaProps) {
   const { fieldsOrder, fieldsSchema } = useFormBuilderContext();
-  console.log("fields order here - ", fieldsOrder);
 
   return (
     <div
@@ -26,7 +25,7 @@ export default function EditorArea({ className }: EditorAreaProps) {
         const { field, required } = fieldsSchema[fieldId];
         return (
           <Fragment key={fieldId}>
-            <FieldDroppable size="slot" index={index} />
+            <FieldDroppable size="slot" index={index} className="rounded-lg" />
             <FieldCard key={fieldId} fieldId={fieldId}>
               {match(field.type)
                 .returnType<React.ReactNode>()
