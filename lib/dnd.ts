@@ -44,5 +44,17 @@ export const collisonDetection: CollisionDetection = ({
     );
   }
 
+  // Collision detection for sortable fields
+  if (activeId.startsWith("sortable-field")) {
+    const collision = rectIntersection({
+      ...args,
+      droppableContainers: droppableContainers.filter(({ id }) =>
+        id.toString().startsWith("sortable-field")
+      ),
+      active,
+    });
+    return collision;
+  }
+
   return [];
 };

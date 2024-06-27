@@ -2,15 +2,17 @@
 
 import { FormField, generateInitialFieldData } from "@/lib/form";
 import { FieldType } from "@/lib/form-elements";
-import { createContext, Dispatch, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { uid } from "uid";
 import invariant from "tiny-invariant";
+import { arrayMove } from "@dnd-kit/sortable";
 
 export type FormBuilderContextType = {
   fieldsSchema: Record<string, FormField>;
   addFieldSchema: (type: FieldType, index: number) => void;
 
   fieldsOrder: string[];
+  updateFieldOrder: (fromIndex: number, toIndex: number) => void;
 
   activeField: string | undefined;
   setActiveField: (field: string) => void;
@@ -45,12 +47,17 @@ export const FormBuilderContextProvider = ({
     setActiveField(fieldId);
   };
   const updateFieldSchema = () => {};
-  const updateFieldOrder = () => {};
+  const updateFieldOrder = (fromIndex: number, toIndex: number) => {
+    setFieldsOrder((prevOrder) => {
+      return arrayMove(prevOrder, fromIndex, toIndex);
+    });
+  };
 
   return (
     <FormBuilderContext.Provider
       value={{
         fieldsSchema,
+        updateFieldOrder,
         fieldsOrder,
         addFieldSchema,
         activeField,

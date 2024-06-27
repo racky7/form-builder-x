@@ -17,13 +17,15 @@ import { FieldType } from "@/lib/form-elements";
 import { collisonDetection } from "@/lib/dnd";
 
 function BuilderArea() {
-  const { addFieldSchema, fieldsOrder } = useFormBuilderContext();
+  const { addFieldSchema, fieldsOrder, updateFieldOrder } =
+    useFormBuilderContext();
 
   const handleDragEnd = useCallback(
     ({ active, over }: DragEndEvent) => {
       const activeData = active?.data?.current;
       const overData = over?.data?.current;
-
+      console.log("active - ", activeData);
+      console.log("over -", overData);
       if (
         activeData &&
         activeData.type === "element-card" &&
@@ -33,9 +35,19 @@ function BuilderArea() {
         const elementType: FieldType = activeData.elementType;
         const index: number = overData.index;
         addFieldSchema(elementType, index);
+      } else if (
+        activeData &&
+        activeData.type === "sortable-field" &&
+        overData &&
+        overData.type === "sortable-field"
+      ) {
+        console.log("it enters here");
+        const activeIndex = activeData.index;
+        const overIndex = overData.index;
+        updateFieldOrder(activeIndex, overIndex);
       }
     },
-    [addFieldSchema]
+    [addFieldSchema, updateFieldOrder]
   );
 
   return (
