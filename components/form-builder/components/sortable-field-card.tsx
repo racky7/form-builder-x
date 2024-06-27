@@ -14,7 +14,8 @@ export default function SortableFieldCard({
   fieldId,
   index,
 }: SortableFieldCardProps) {
-  const { activeField, setActiveField, fieldsSchema } = useFormBuilderContext();
+  const { activeField, setActiveField, fieldsSchema, deleteField } =
+    useFormBuilderContext();
   const isActiveField = activeField === fieldId;
 
   const {
@@ -47,6 +48,10 @@ export default function SortableFieldCard({
     }
   };
 
+  const handleFieldDelete = () => {
+    deleteField(fieldId);
+  };
+
   return (
     <FieldCard
       {...fieldsSchema[fieldId]}
@@ -57,6 +62,7 @@ export default function SortableFieldCard({
       listeners={listeners}
       setNodeRef={setNodeRef}
       setActivatorNodeRef={setActivatorNodeRef}
+      onDelete={handleFieldDelete}
     />
   );
 }

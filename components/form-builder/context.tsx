@@ -16,6 +16,8 @@ export type FormBuilderContextType = {
 
   activeField: string | undefined;
   setActiveField: (field: string) => void;
+
+  deleteField: (fieldId: string) => void;
 };
 
 export const FormBuilderContext = createContext<
@@ -52,6 +54,18 @@ export const FormBuilderContextProvider = ({
       return arrayMove(prevOrder, fromIndex, toIndex);
     });
   };
+  const deleteField = (fieldId: string) => {
+    const fieldIndex = fieldsOrder.findIndex((id) => id === fieldId);
+    if (fieldsOrder.length > 1) {
+      const newIndex =
+        fieldIndex === 0 ? 1 : fieldIndex === 1 ? 0 : fieldIndex - 1;
+      setActiveField(fieldsOrder[newIndex]);
+    }
+    setFieldsOrder((prevOrder) => prevOrder.filter((id) => id !== fieldId));
+    const currentFieldSchema = { ...fieldsSchema };
+    delete currentFieldSchema[fieldId];
+    setFieldsSchema(currentFieldSchema);
+  };
 
   return (
     <FormBuilderContext.Provider
@@ -62,6 +76,7 @@ export const FormBuilderContextProvider = ({
         addFieldSchema,
         activeField,
         setActiveField,
+        deleteField,
       }}
     >
       {children}

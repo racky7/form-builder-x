@@ -4,10 +4,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FormField } from "@/lib/form";
 import { Label } from "@/components/ui/label";
-import { GripHorizontalIcon } from "lucide-react";
+import { GripHorizontalIcon, Trash2Icon, TrashIcon } from "lucide-react";
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
 
 type DndDraggableProps = {
   attributes?: DraggableAttributes;
@@ -21,6 +23,7 @@ type FieldRendererProps = FormField &
     isActiveField: boolean;
     onMouseDown?: () => void;
     style?: React.CSSProperties;
+    onDelete?: () => void;
   };
 
 export default function FieldCard({
@@ -33,6 +36,7 @@ export default function FieldCard({
   listeners,
   setNodeRef,
   setActivatorNodeRef,
+  onDelete,
 }: FieldRendererProps) {
   invariant(field, "Field not found");
 
@@ -90,6 +94,21 @@ export default function FieldCard({
           .with(P._, () => null)
           .exhaustive()}
       </div>
+      {isActiveField ? (
+        <>
+          <Separator />
+          <div className="flex justify-end py-2 px-3">
+            <Button
+              variant="ghost"
+              onClick={() => {
+                onDelete?.();
+              }}
+            >
+              <Trash2Icon className="h-4 w-4 text-gray-700" />
+            </Button>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }
