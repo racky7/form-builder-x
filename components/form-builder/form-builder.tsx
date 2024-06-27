@@ -6,14 +6,18 @@ import EditorArea from "./components/editor-area";
 import ElementsPane from "./components/elements-pane";
 import FieldEditorPane from "./components/field-editor-pane";
 import { DndContext, DragEndEvent } from "@dnd-kit/core";
+import {
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { useCallback } from "react";
 import EditorAreaDroppable from "./components/editor-area-droppable";
-import ElementCardOverlay from "./components/element-card-overlay";
+import DragOverlay from "./components/drag-overlay";
 import { FieldType } from "@/lib/form-elements";
 import { collisonDetection } from "@/lib/dnd";
 
 function BuilderArea() {
-  const { addFieldSchema } = useFormBuilderContext();
+  const { addFieldSchema, fieldsOrder } = useFormBuilderContext();
 
   const handleDragEnd = useCallback(
     ({ active, over }: DragEndEvent) => {
@@ -43,16 +47,21 @@ function BuilderArea() {
         <Navbar />
         <div className="flex-1 flex overflow-y-auto">
           <ElementsPane />
-          <EditorAreaDroppable
-            className="flex-1 flex justify-center bg-primary/10 overflow-y-auto"
-            style={{ transform: "translate3d(0, 0, 0)" }}
+          <SortableContext
+            items={fieldsOrder.map((fieldId) => `sortable-field-${fieldId}`)}
+            strategy={verticalListSortingStrategy}
           >
-            <EditorArea className="max-w-[660px] h-full" />
-          </EditorAreaDroppable>
+            <EditorAreaDroppable
+              className="flex-1 flex justify-center bg-primary/10 overflow-y-auto"
+              style={{ transform: "translate3d(0, 0, 0)" }}
+            >
+              <EditorArea className="max-w-[660px] h-full" />
+            </EditorAreaDroppable>
+          </SortableContext>
           <FieldEditorPane />
         </div>
       </div>
-      <ElementCardOverlay />
+      <DragOverlay />
     </DndContext>
   );
 }

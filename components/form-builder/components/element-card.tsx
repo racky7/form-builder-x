@@ -14,7 +14,7 @@ export default function ElementCard({
   elementType,
 }: ElementCardProps) {
   const id = useId();
-  const { setNodeRef, listeners, attributes } = useDraggable({
+  const { setNodeRef, listeners, attributes, isDragging } = useDraggable({
     id: `element-card-${id}`,
     data: {
       type: "element-card",
@@ -31,6 +31,7 @@ export default function ElementCard({
       )}
       {...listeners}
       {...attributes}
+      style={{ opacity: isDragging ? 0.5 : 1 }}
     >
       {FORM_FIELD_CONFIG[elementType].icon}
       {FORM_FIELD_CONFIG[elementType].name}
