@@ -6,10 +6,15 @@ import { createContext, useContext, useState } from "react";
 import { uid } from "uid";
 import invariant from "tiny-invariant";
 import { arrayMove } from "@dnd-kit/sortable";
+import deepmerge from "deepmerge";
 
 export type FormBuilderContextType = {
   fieldsSchema: Record<string, FormField>;
   addFieldSchema: (type: FieldType, index: number) => void;
+  updateFieldSchema: (
+    fieldId: string,
+    updatedField: Partial<FormField>
+  ) => void;
 
   fieldsOrder: string[];
   updateFieldOrder: (fromIndex: number, toIndex: number) => void;
@@ -48,7 +53,14 @@ export const FormBuilderContextProvider = ({
     });
     setActiveField(fieldId);
   };
-  const updateFieldSchema = () => {};
+  const updateFieldSchema = (
+    fieldId: string,
+    updatedField: Partial<FormField>
+  ) => {
+    const currentFieldSchema = fieldsSchema[fieldId];
+    const updatedFieldSchema = deepmerge(currentFieldSchema, updatedField);
+    setFieldsSchema({ ...fieldsSchema, [fieldId]: updatedFieldSchema });
+  };
   const updateFieldOrder = (fromIndex: number, toIndex: number) => {
     setFieldsOrder((prevOrder) => {
       return arrayMove(prevOrder, fromIndex, toIndex);
@@ -60,6 +72,8 @@ export const FormBuilderContextProvider = ({
       const newIndex =
         fieldIndex === 0 ? 1 : fieldIndex === 1 ? 0 : fieldIndex - 1;
       setActiveField(fieldsOrder[newIndex]);
+    } else {
+      setActiveField(undefined);
     }
     setFieldsOrder((prevOrder) => prevOrder.filter((id) => id !== fieldId));
     const currentFieldSchema = { ...fieldsSchema };
@@ -72,6 +86,7 @@ export const FormBuilderContextProvider = ({
       value={{
         fieldsSchema,
         updateFieldOrder,
+        updateFieldSchema,
         fieldsOrder,
         addFieldSchema,
         activeField,

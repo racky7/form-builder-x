@@ -33,8 +33,8 @@ export default function DragOverlay() {
 
           return fieldData ? (
             <FieldCard
-              isActiveField={isActiveField}
               {...fieldData}
+              isActiveField={isActiveField}
               style={{ opacity: 0.7 }}
             />
           ) : null;

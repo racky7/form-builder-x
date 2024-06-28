@@ -10,6 +10,11 @@ import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 type DndDraggableProps = {
   attributes?: DraggableAttributes;
@@ -24,10 +29,12 @@ type FieldRendererProps = FormField &
     onMouseDown?: () => void;
     style?: React.CSSProperties;
     onDelete?: () => void;
+    fieldId?: string;
   };
 
 export default function FieldCard({
   field,
+  name,
   required,
   isActiveField,
   onMouseDown,
@@ -37,6 +44,7 @@ export default function FieldCard({
   setNodeRef,
   setActivatorNodeRef,
   onDelete,
+  fieldId,
 }: FieldRendererProps) {
   invariant(field, "Field not found");
 
@@ -62,7 +70,7 @@ export default function FieldCard({
         <GripHorizontalIcon className="h-4 w-4 text-gray-400" />
       </div>
       <div className="space-y-2 px-6 pb-6 cursor-auto">
-        <Label className="select-none">Field Name</Label>
+        <div className="text-sm" dangerouslySetInnerHTML={{ __html: name }} />
         {match(field.type)
           .returnType<React.ReactNode>()
           .with("input", () => {
@@ -98,14 +106,19 @@ export default function FieldCard({
         <>
           <Separator />
           <div className="flex justify-end py-2 px-3">
-            <Button
-              variant="ghost"
-              onClick={() => {
-                onDelete?.();
-              }}
-            >
-              <Trash2Icon className="h-4 w-4 text-gray-700" />
-            </Button>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  onClick={() => {
+                    onDelete?.();
+                  }}
+                >
+                  <Trash2Icon className="h-4 w-4 text-gray-700" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom">Delete</TooltipContent>
+            </Tooltip>
           </div>
         </>
       ) : null}

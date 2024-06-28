@@ -15,6 +15,7 @@ import EditorAreaDroppable from "./components/editor-area-droppable";
 import DragOverlay from "./components/drag-overlay";
 import { FieldType } from "@/lib/form-elements";
 import { collisonDetection } from "@/lib/dnd";
+import { TooltipProvider } from "../ui/tooltip";
 
 function BuilderArea() {
   const { addFieldSchema, fieldsOrder, updateFieldOrder } =
@@ -24,8 +25,6 @@ function BuilderArea() {
     ({ active, over }: DragEndEvent) => {
       const activeData = active?.data?.current;
       const overData = over?.data?.current;
-      console.log("active - ", activeData);
-      console.log("over -", overData);
       if (
         activeData &&
         activeData.type === "element-card" &&
@@ -41,7 +40,6 @@ function BuilderArea() {
         overData &&
         overData.type === "sortable-field"
       ) {
-        console.log("it enters here");
         const activeIndex = activeData.index;
         const overIndex = overData.index;
         updateFieldOrder(activeIndex, overIndex);
@@ -81,7 +79,9 @@ function BuilderArea() {
 export default function FormBuilder() {
   return (
     <FormBuilderContextProvider>
-      <BuilderArea />
+      <TooltipProvider>
+        <BuilderArea />
+      </TooltipProvider>
     </FormBuilderContextProvider>
   );
 }

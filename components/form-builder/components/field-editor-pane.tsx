@@ -5,20 +5,62 @@ import { useFormBuilderContext } from "../context";
 import TiptapEditor from "@/components/tiptap-editor/tiptap-editor";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { P, match } from "ts-pattern";
+import invariant from "tiny-invariant";
 
 export default function FieldEditorPane() {
-  const { activeField } = useFormBuilderContext();
+  const { activeField, fieldsSchema, updateFieldSchema } =
+    useFormBuilderContext();
 
-  return activeField ? (
+  if (!activeField) {
+    return (
+      <div className="w-72 h-full flex items-center justify-center p-4 text-xs">
+        Select an field to edit its content
+      </div>
+    );
+  }
+
+  const { field } = fieldsSchema[activeField];
+
+  return (
     <div className="w-72 h-fit p-4 text-sm grid space-y-8">
       <div className="space-y-2">
-        <Label>Question</Label>
-        <TiptapEditor />
+        <Label>Field Name</Label>
+        <TiptapEditor
+          key={activeField}
+          value={fieldsSchema[activeField].name}
+          onChange={(updatedValue) => {
+            updateFieldSchema(activeField, {
+              name: updatedValue,
+            });
+          }}
+        />
       </div>
-      <div className="space-y-2">
-        <Label>Placeholder</Label>
-        <Input value="Your Placeholder Text" />
-      </div>
+
+      {match(field.type)
+        .returnType<React.ReactNode>()
+        .with("input", () => {
+          invariant(field.type === "input");
+          return (
+            <>
+              <div className="space-y-2">
+                <Label>Placeholder</Label>
+                <Input
+                  value={field.placeholder}
+                  onChange={(event) => {
+                    const updatedValue = event.target.value;
+                    updateFieldSchema(activeField, {
+                      field: { ...field, placeholder: updatedValue },
+                    });
+                  }}
+                />
+              </div>
+            </>
+          );
+        })
+        .with(P._, () => null)
+        .exhaustive()}
+
       <div className="items-top flex space-x-2">
         <Checkbox id="required_check" />
         <div className="grid gap-1.5 leading-none">
@@ -33,10 +75,6 @@ export default function FieldEditorPane() {
           </p>
         </div>
       </div>
-    </div>
-  ) : (
-    <div className="w-72 h-full flex items-center justify-center p-4 text-xs">
-      Select an field to edit its content
     </div>
   );
 }

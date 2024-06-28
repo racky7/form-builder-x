@@ -4,7 +4,12 @@ import React from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 
-export default function TiptapEditor() {
+type TiptapEditorProps = {
+  value: string;
+  onChange?: (value: string) => void;
+};
+
+export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
   const editor = useEditor({
     extensions: [StarterKit],
     editorProps: {
@@ -12,12 +17,24 @@ export default function TiptapEditor() {
         class: "min-h-14 h-auto p-1 border border-input rounded-sm",
       },
     },
-    content: "Field Name",
+    content: value,
+    onUpdate: () => {
+      const html = editor?.getHTML();
+      if (html) {
+        console.log(html);
+        onChange?.(html);
+      }
+    },
   });
 
   return (
-    <div>
-      <EditorContent editor={editor} />
+    <div className="min-h-14">
+      <EditorContent
+        editor={editor}
+        onChange={(value) => {
+          console.log(value);
+        }}
+      />
     </div>
   );
 }

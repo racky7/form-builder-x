@@ -79,7 +79,7 @@ export const generateInitialFieldData = (type: FieldType) => {
   switch (type) {
     case "short-input": {
       initialData = {
-        name: "Field Name",
+        name: "<p>Field Name</p>",
         field: {
           type: "input",
           inputType: "short-input",
