@@ -8,7 +8,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "pnpm db:generate"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.2.1",
