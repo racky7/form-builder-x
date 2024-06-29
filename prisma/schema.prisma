@@ -25,6 +25,7 @@ model User {
   password      String?
   role          UserRole  @default(USER)
   accounts      Account[]
+  Form          Form[]
 }
 
 model Account {
@@ -44,4 +45,20 @@ model Account {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
+}
+
+enum SaveStatus {
+  DRAFT
+  SAVED
+}
+
+model Form {
+  id           String     @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  slug         String     @unique
+  fieldsSchema Json       @default("{}")
+  fieldsOrder  Json       @default("[]")
+  user         User       @relation(fields: [userId], references: [id])
+  userId       String     @db.ObjectId
+  saveStatus   SaveStatus @default(DRAFT)
 }
