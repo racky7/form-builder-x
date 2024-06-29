@@ -21,7 +21,7 @@ export const authRoutes: string[] = [
  * The prefix for API authentication routes
  * Routes that start with this prefix are used for API authentication purposes
  */
-export const apiAuthPrefix = "/api/auth";
+export const apiAuthPrefix = "/api/trpc";
 
 /**
  * The default redirect path after logging in

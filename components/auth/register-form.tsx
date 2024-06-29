@@ -1,8 +1,6 @@
 "use client";
 
 import { z } from "zod";
-import { useTransition } from "react";
-import { registerConfig } from "@/lib/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CardWrapper from "./card-wrapper";
@@ -16,25 +14,38 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { register } from "@/actions/register";
+import { useRouter } from "next/navigation";
+import { trpc } from "@/lib/trpc/client";
+
+const signupConfig = z.object({
+  name: z.string().trim().min(1, { message: "Fullname is required" }),
+  email: z.string().email(),
+  password: z.string().min(4, { message: "Password is required" }),
+});
 
 export default function RegisterForm() {
-  const [isPending, startTransition] = useTransition();
-  const form = useForm<z.infer<typeof registerConfig>>({
+  const router = useRouter();
+  const signUpUserMutation = trpc.user.signUpUser.useMutation({
+    onSuccess: () => {
+      // toast.success("Sign Up Sucessfully");
+      router.push("/log-in");
+    },
+    onError: (error) => {
+      // toast.error(error.message);
+    },
+  });
+
+  const form = useForm<z.infer<typeof signupConfig>>({
     defaultValues: {
       name: "",
       email: "",
       password: "",
     },
-    resolver: zodResolver(registerConfig),
+    resolver: zodResolver(signupConfig),
   });
 
-  const onSubmit = (values: z.infer<typeof registerConfig>) => {
-    startTransition(() => {
-      register(values).then((data) => {
-        console.log(data);
-      });
-    });
+  const onSubmit = (values: z.infer<typeof signupConfig>) => {
+    signUpUserMutation.mutate(values);
   };
 
   return (
@@ -54,8 +65,8 @@ export default function RegisterForm() {
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
-                    placeholder="Raj Chauhan"
+                    disabled={signUpUserMutation.isLoading}
+                    placeholder="Your name"
                   />
                 </FormControl>
                 <FormMessage />
@@ -71,8 +82,8 @@ export default function RegisterForm() {
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
-                    placeholder="raj.chauhan@example.com"
+                    disabled={signUpUserMutation.isLoading}
+                    placeholder="your.email@gmail.com"
                     type="email"
                   />
                 </FormControl>
@@ -90,7 +101,7 @@ export default function RegisterForm() {
                   <Input
                     {...field}
                     placeholder="*******"
-                    disabled={isPending}
+                    disabled={signUpUserMutation.isLoading}
                     type="password"
                   />
                 </FormControl>
@@ -98,7 +109,11 @@ export default function RegisterForm() {
               </FormItem>
             )}
           />
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button
+            disabled={signUpUserMutation.isLoading}
+            type="submit"
+            className="w-full"
+          >
             Create an Account
           </Button>
         </form>

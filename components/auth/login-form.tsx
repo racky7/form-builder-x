@@ -2,7 +2,6 @@
 
 import { z } from "zod";
 import { useTransition } from "react";
-import { loginConfig } from "@/lib/auth";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CardWrapper from "./card-wrapper";
@@ -16,24 +15,37 @@ import {
 } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { login } from "@/actions/login";
+import { trpc } from "@/lib/trpc/client";
+import { useRouter } from "next/navigation";
+
+const loginConfig = z.object({
+  email: z.string().email(),
+  password: z.string().min(4, { message: "Password is required" }),
+});
 
 export default function LoginForm() {
-  const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const loginMutation = trpc.user.logInUser.useMutation({
+    onSuccess: (user) => {
+      console.log(user);
+      // toast.success("Login successful");
+      router.push("/forms");
+    },
+    onError: (error) => {
+      // toast.error("Login failed");
+    },
+  });
+
   const form = useForm<z.infer<typeof loginConfig>>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "test.account@gmail.com",
+      password: "Abc123",
     },
     resolver: zodResolver(loginConfig),
   });
 
   const onSubmit = (values: z.infer<typeof loginConfig>) => {
-    startTransition(() => {
-      login(values).then((data) => {
-        console.log(data);
-      });
-    });
+    loginMutation.mutate(values);
   };
 
   return (
@@ -53,8 +65,8 @@ export default function LoginForm() {
                 <FormControl>
                   <Input
                     {...field}
-                    disabled={isPending}
-                    placeholder="raj.chauhan@example.com"
+                    disabled={loginMutation.isLoading}
+                    placeholder="your.email@gmail.com"
                     type="email"
                   />
                 </FormControl>
@@ -72,7 +84,7 @@ export default function LoginForm() {
                   <Input
                     {...field}
                     placeholder="*******"
-                    disabled={isPending}
+                    disabled={loginMutation.isLoading}
                     type="password"
                   />
                 </FormControl>
@@ -80,7 +92,11 @@ export default function LoginForm() {
               </FormItem>
             )}
           ></FormField>
-          <Button disabled={isPending} type="submit" className="w-full">
+          <Button
+            disabled={loginMutation.isLoading}
+            type="submit"
+            className="w-full"
+          >
             Log in
           </Button>
         </form>
