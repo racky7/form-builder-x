@@ -1,6 +1,7 @@
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import FormCard from "./_components/form-card";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -10,7 +11,9 @@ export default async function DashboardPage() {
       <nav className="border-b border-gray-200 bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="text-2xl flex-1">Form Builder</div>
+            <div className="text-2xl font-semibold text-primary">
+              FormBuilderX
+            </div>
             <form
               action={async () => {
                 "use server";
@@ -33,7 +36,13 @@ export default async function DashboardPage() {
             </Button>
           </div>
         </header>
-        <main></main>
+        <main>
+          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+            <div className="grid grid-cols-12 mt-7 py-1 gap-6">
+              <FormCard className="col-span-12 md:col-span-6 lg:col-span-2" />
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   );

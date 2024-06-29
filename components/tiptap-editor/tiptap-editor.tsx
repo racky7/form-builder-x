@@ -21,7 +21,6 @@ export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
     onUpdate: () => {
       const html = editor?.getHTML();
       if (html) {
-        console.log(html);
         onChange?.(html);
       }
     },

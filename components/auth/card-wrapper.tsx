@@ -25,7 +25,9 @@ export default function CardWrapper({
       <Card className="w-[400px] shadow-md">
         <CardHeader>
           <div className="w-full flex flex-col gap-y-4 items-center justify-center">
-            {/* <h1 className="text-3xl font-semibold">Login</h1> */}
+            <h1 className="text-3xl font-semibold text-primary">
+              FormBuilderX
+            </h1>
             {headerLabel}
           </div>
         </CardHeader>

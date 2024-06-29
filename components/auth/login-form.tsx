@@ -27,7 +27,6 @@ export default function LoginForm() {
   const router = useRouter();
   const loginMutation = trpc.user.logInUser.useMutation({
     onSuccess: (user) => {
-      console.log(user);
       // toast.success("Login successful");
       router.push("/forms");
     },

@@ -50,6 +50,7 @@ function BuilderArea() {
 
   return (
     <DndContext
+      id="unique-dnd-context-id"
       onDragEnd={handleDragEnd}
       collisionDetection={collisonDetection}
     >
