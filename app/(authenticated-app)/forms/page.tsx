@@ -1,7 +1,7 @@
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
-import { PlusIcon } from "lucide-react";
 import FormCard from "./_components/form-card";
+import CreateFormModal from "./_components/create-form-modal";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -31,9 +31,7 @@ export default async function DashboardPage() {
             <h1 className="text-xl font-semibold leading-tight tracking-tight text-gray-700">
               Your Forms
             </h1>
-            <Button>
-              <PlusIcon className="h-4 w-4 mr-1" /> <div>New Form</div>
-            </Button>
+            <CreateFormModal />
           </div>
         </header>
         <main>

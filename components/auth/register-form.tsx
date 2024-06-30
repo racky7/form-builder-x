@@ -16,6 +16,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { useRouter } from "next/navigation";
 import { trpc } from "@/lib/trpc/client";
+import { useToast } from "../ui/use-toast";
 
 const signupConfig = z.object({
   name: z.string().trim().min(1, { message: "Fullname is required" }),
@@ -25,13 +26,20 @@ const signupConfig = z.object({
 
 export default function RegisterForm() {
   const router = useRouter();
+  const { toast } = useToast();
   const signUpUserMutation = trpc.user.signUpUser.useMutation({
     onSuccess: () => {
-      // toast.success("Sign Up Sucessfully");
+      toast({
+        title: "Sign Up Sucessfully",
+      });
       router.push("/log-in");
     },
     onError: (error) => {
-      // toast.error(error.message);
+      toast({
+        title: "Sign Up failed!",
+        variant: "destructive",
+        description: error.message,
+      });
     },
   });
 

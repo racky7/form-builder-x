@@ -1,7 +1,6 @@
 "use client";
 
 import { z } from "zod";
-import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import CardWrapper from "./card-wrapper";
@@ -17,6 +16,7 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { trpc } from "@/lib/trpc/client";
 import { useRouter } from "next/navigation";
+import { useToast } from "../ui/use-toast";
 
 const loginConfig = z.object({
   email: z.string().email(),
@@ -25,13 +25,21 @@ const loginConfig = z.object({
 
 export default function LoginForm() {
   const router = useRouter();
+  const { toast } = useToast();
+
   const loginMutation = trpc.user.logInUser.useMutation({
     onSuccess: (user) => {
-      // toast.success("Login successful");
+      toast({
+        title: "Login  successfull",
+      });
       router.push("/forms");
     },
     onError: (error) => {
-      // toast.error("Login failed");
+      toast({
+        variant: "destructive",
+        title: "Login failed!",
+        description: error.message,
+      });
     },
   });
 
