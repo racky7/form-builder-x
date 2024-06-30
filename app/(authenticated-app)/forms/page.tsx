@@ -1,11 +1,9 @@
 import { auth, signOut } from "@/auth";
 import { Button } from "@/components/ui/button";
-import FormCard from "./_components/form-card";
 import CreateFormModal from "./_components/create-form-modal";
+import FormsSection from "./_components/forms-section";
 
 export default async function DashboardPage() {
-  const session = await auth();
-
   return (
     <div className="w-full min-h-full flex flex-col">
       <nav className="border-b border-gray-200 bg-white">
@@ -35,11 +33,7 @@ export default async function DashboardPage() {
           </div>
         </header>
         <main>
-          <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="grid grid-cols-12 mt-7 py-1 gap-6">
-              <FormCard className="col-span-12 md:col-span-6 lg:col-span-2" />
-            </div>
-          </div>
+          <FormsSection />
         </main>
       </div>
     </div>

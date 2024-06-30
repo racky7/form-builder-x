@@ -19,21 +19,29 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { trpc } from "@/lib/trpc/client";
+import { useRouter } from "next/navigation";
 
 const newFormConfig = z.object({
   name: z.string(),
 });
 
 export default function CreateFormModal() {
+  const router = useRouter();
+  const createFormMutation = trpc.builder.createForm.useMutation({
+    onSuccess: (data) => {
+      router.push(`/forms/${data.slug}/edit`);
+    },
+  });
   const form = useForm<z.infer<typeof newFormConfig>>({
     defaultValues: {
       name: "My Form",
     },
   });
+
   return (
     <div>
       <Dialog>
@@ -42,9 +50,15 @@ export default function CreateFormModal() {
             <PlusIcon className="h-4 w-4 mr-1" /> <div>New Form</div>
           </Button>
         </DialogTrigger>
-        <Form {...form}>
-          <form>
-            <DialogContent showCloseButton={false}>
+
+        <DialogContent showCloseButton={false}>
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(({ name }) => {
+                console.log("this function is called");
+                createFormMutation.mutate({ name });
+              })}
+            >
               <DialogHeader className="space-y-3 pb-4">
                 <DialogTitle>Form Name</DialogTitle>
                 <DialogDescription>
@@ -66,11 +80,13 @@ export default function CreateFormModal() {
                 <DialogClose asChild>
                   <Button variant="outline">Cancel</Button>
                 </DialogClose>
-                <Button type="submit">Create Form</Button>
+                <Button disabled={createFormMutation.isLoading} type="submit">
+                  Create Form
+                </Button>
               </DialogFooter>
-            </DialogContent>
-          </form>
-        </Form>
+            </form>
+          </Form>
+        </DialogContent>
       </Dialog>
     </div>
   );

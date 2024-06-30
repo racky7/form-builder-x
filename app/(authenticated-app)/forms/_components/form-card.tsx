@@ -4,10 +4,12 @@ import { MoreHorizontalIcon } from "lucide-react";
 import Link from "next/link";
 
 type FormCardProps = {
+  name: string;
+  slug: string;
   className: string;
 };
 
-export default function FormCard({ className }: FormCardProps) {
+export default function FormCard({ name, slug, className }: FormCardProps) {
   return (
     <div
       className={cn(
@@ -16,10 +18,10 @@ export default function FormCard({ className }: FormCardProps) {
       )}
     >
       <Link
-        href="/forms/dhajsdhhiq/edit"
+        href={`/forms/${slug}/edit`}
         className="h-40 text-center flex items-center justify-center"
       >
-        <h1 className="text-xl font-light px-2 line-clamp-4">My Form</h1>
+        <h1 className="text-xl font-light px-2 line-clamp-4">{name}</h1>
       </Link>
       <div className="border-t border-gray-200 flex items-center justify-between py-4 px-1">
         <div>

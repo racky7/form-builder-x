@@ -1,4 +1,4 @@
-import { protectedProcedure, publicProcedure, router } from "../../trpc";
+import { protectedProcedure, publicProcedure, router } from "../../../trpc";
 import { getUserInput, logInUserInput, signUpUserInput } from "./user.input";
 import { getCurrentUser, getUser, logInUser, signUpUser } from "./user.service";
 
