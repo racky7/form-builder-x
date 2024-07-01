@@ -39,6 +39,7 @@ export default function FormsSection() {
               {data?.map((form) => (
                 <FormCard
                   key={form.id}
+                  id={form.id}
                   name={form.name}
                   slug={form.slug}
                   className="col-span-12 md:col-span-6 lg:col-span-2"

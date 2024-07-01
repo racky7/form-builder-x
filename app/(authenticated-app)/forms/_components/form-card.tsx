@@ -1,15 +1,35 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { MoreHorizontalIcon } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { trpc } from "@/lib/trpc/client";
+import { useToast } from "@/components/ui/use-toast";
 
 type FormCardProps = {
+  id: string;
   name: string;
   slug: string;
   className: string;
 };
 
-export default function FormCard({ name, slug, className }: FormCardProps) {
+export default function FormCard({ id, name, slug, className }: FormCardProps) {
+  const { toast } = useToast();
+  const utils = trpc.useUtils();
+  const deleteFormMutation = trpc.builder.deleteForm.useMutation({
+    onSuccess: () => {
+      utils.builder.getUserForms.invalidate();
+      toast({
+        title: "Form Deleted Successfully",
+      });
+    },
+  });
+
   return (
     <div
       className={cn(
@@ -29,9 +49,27 @@ export default function FormCard({ name, slug, className }: FormCardProps) {
             No responses
           </span>
         </div>
-        <Button variant="ghost" size="sm">
-          <MoreHorizontalIcon className="h-3 w-3" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreHorizontalIcon className="h-3 w-3" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start">
+            <DropdownMenuItem
+              disabled={deleteFormMutation.isLoading}
+              onClick={() => {
+                deleteFormMutation.mutate({ id });
+              }}
+            >
+              Delete
+            </DropdownMenuItem>
+            <DropdownMenuItem>Rename</DropdownMenuItem>
+            <DropdownMenuItem>Duplicate</DropdownMenuItem>
+            <DropdownMenuItem>Open Form Page</DropdownMenuItem>
+            <DropdownMenuItem>Copy Form Link</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   );
