@@ -7,6 +7,9 @@ import { uid } from "uid";
 import invariant from "tiny-invariant";
 import { arrayMove } from "@dnd-kit/sortable";
 import deepmerge from "deepmerge";
+import { Form } from "@prisma/client";
+
+type FormSaveStatus = "DRAFT" | "SAVED";
 
 export type FormBuilderContextType = {
   fieldsSchema: Record<string, FormField>;
@@ -23,6 +26,13 @@ export type FormBuilderContextType = {
   setActiveField: (field: string) => void;
 
   deleteField: (fieldId: string) => void;
+
+  formSaveStatus: FormSaveStatus;
+  updateFormSaveStatus: (status: FormSaveStatus) => void;
+
+  loadForm: (data: Form) => void;
+
+  formName: string;
 };
 
 export const FormBuilderContext = createContext<
@@ -34,11 +44,13 @@ export const FormBuilderContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const [formName, setFormName] = useState<string>("");
   const [fieldsSchema, setFieldsSchema] = useState<Record<string, FormField>>(
     {}
   );
   const [fieldsOrder, setFieldsOrder] = useState<string[]>([]);
   const [activeField, setActiveField] = useState<string | undefined>(undefined);
+  const [formSaveStatus, setFormSaveStatus] = useState<FormSaveStatus>("DRAFT");
 
   const addFieldSchema = (type: FieldType, index: number) => {
     const fieldId = uid();
@@ -52,6 +64,7 @@ export const FormBuilderContextProvider = ({
       return currentOrder;
     });
     setActiveField(fieldId);
+    setFormSaveStatus("DRAFT");
   };
   const updateFieldSchema = (
     fieldId: string,
@@ -80,6 +93,18 @@ export const FormBuilderContextProvider = ({
     delete currentFieldSchema[fieldId];
     setFieldsSchema(currentFieldSchema);
   };
+  const updateFormSaveStatus = (status: FormSaveStatus) => {
+    setFormSaveStatus(status);
+  };
+
+  const loadForm = (data: Form) => {
+    const fieldsSchema = data.fieldsSchema as Record<string, FormField>;
+    const fieldsOrder = data.fieldsOrder as string[];
+    setFieldsSchema(fieldsSchema);
+    setFieldsOrder(fieldsOrder);
+    setFormName(data.name);
+    setFormSaveStatus("SAVED");
+  };
 
   return (
     <FormBuilderContext.Provider
@@ -92,6 +117,10 @@ export const FormBuilderContextProvider = ({
         activeField,
         setActiveField,
         deleteField,
+        formSaveStatus,
+        updateFormSaveStatus,
+        loadForm,
+        formName,
       }}
     >
       {children}

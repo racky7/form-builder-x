@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { createFormInput, restoreOrDeleteFormInput } from "./builder.input";
+import {
+  createFormInput,
+  getUserFormInput,
+  restoreOrDeleteFormInput,
+} from "./builder.input";
 import { prisma } from "@/server/db";
 import { Session } from "next-auth";
 import { uid } from "uid";
@@ -28,7 +32,17 @@ export function createForm(
   });
 }
 
-export function getUserForm() {}
+export function getUserForm(
+  input: z.infer<typeof getUserFormInput>,
+  session: Session
+) {
+  return prisma.form.findFirst({
+    where: {
+      slug: input.slug,
+      userId: session.user.id!,
+    },
+  });
+}
 
 export function updateUserForm() {}
 

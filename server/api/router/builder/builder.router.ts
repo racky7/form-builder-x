@@ -1,8 +1,13 @@
 import { publicProcedure, protectedProcedure, router } from "@/server/trpc";
-import { createFormInput, restoreOrDeleteFormInput } from "./builder.input";
+import {
+  createFormInput,
+  getUserFormInput,
+  restoreOrDeleteFormInput,
+} from "./builder.input";
 import {
   createForm,
   deleteUserForm,
+  getUserForm,
   getUserForms,
   restoreUserForm,
 } from "./builder.service";
@@ -11,6 +16,9 @@ export const builderRouter = router({
   getUserForms: protectedProcedure.query(({ ctx: { session } }) =>
     getUserForms(session)
   ),
+  getUserForm: protectedProcedure
+    .input(getUserFormInput)
+    .query(({ input, ctx: { session } }) => getUserForm(input, session)),
   createForm: protectedProcedure
     .input(createFormInput)
     .mutation(({ input, ctx: { session } }) => createForm(input, session)),
