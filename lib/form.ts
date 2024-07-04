@@ -26,7 +26,7 @@ const field = z.discriminatedUnion("type", [
   }),
 ]);
 
-const formField = z.object({
+export const formField = z.object({
   field,
   name: z.string(),
   required: z.boolean(),

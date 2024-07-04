@@ -3,6 +3,7 @@ import {
   createFormInput,
   getUserFormInput,
   restoreOrDeleteFormInput,
+  updateFormInput,
 } from "./builder.input";
 import { prisma } from "@/server/db";
 import { Session } from "next-auth";
@@ -44,7 +45,20 @@ export function getUserForm(
   });
 }
 
-export function updateUserForm() {}
+export function updateUserForm(
+  { id, ...rest }: z.infer<typeof updateFormInput>,
+  session: Session
+) {
+  return prisma.form.update({
+    where: {
+      id,
+      userId: session.user.id,
+    },
+    data: {
+      ...rest,
+    },
+  });
+}
 
 export function deleteUserForm(
   input: z.infer<typeof restoreOrDeleteFormInput>,

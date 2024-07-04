@@ -4,9 +4,26 @@ import { ArrowLeftIcon } from "lucide-react";
 import Link from "next/link";
 import { useFormBuilderContext } from "../context";
 import { cn } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function Navbar() {
-  const { formName } = useFormBuilderContext();
+  const { toast } = useToast();
+  const { formId, formName, fieldsOrder, fieldsSchema, formSaveStatus } =
+    useFormBuilderContext();
+  const updateFormMutation = trpc.builder.updateUserForm.useMutation({
+    onSuccess: () => {
+      toast({
+        title: "Form saved successfully",
+      });
+    },
+  });
+
+  const saveText = updateFormMutation.isLoading
+    ? "Saving..."
+    : formSaveStatus === "SAVED"
+    ? "Saved"
+    : "Save";
+
   return (
     <nav className="grid grid-cols-12 bg-white text-gray-700 items-center p-4 border-b border-slate-200">
       <div className="col-span-8 flex items-center">
@@ -28,7 +45,19 @@ export default function Navbar() {
         </div>
       </div>
       <div className="col-span-4 flex justify-end items-center">
-        <Button>Save</Button>
+        <Button
+          disabled={formSaveStatus === "SAVED" || updateFormMutation.isLoading}
+          onClick={() => {
+            console.log("this logged");
+            updateFormMutation.mutate({
+              id: formId!,
+              fieldsOrder: fieldsOrder,
+              fieldsSchema: fieldsSchema,
+            });
+          }}
+        >
+          {saveText}
+        </Button>
       </div>
     </nav>
   );

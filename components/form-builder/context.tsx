@@ -12,6 +12,7 @@ import { Form } from "@prisma/client";
 type FormSaveStatus = "DRAFT" | "SAVED";
 
 export type FormBuilderContextType = {
+  formId: string | undefined;
   fieldsSchema: Record<string, FormField>;
   addFieldSchema: (type: FieldType, index: number) => void;
   updateFieldSchema: (
@@ -44,6 +45,7 @@ export const FormBuilderContextProvider = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const [formId, setFormId] = useState<string | undefined>(undefined);
   const [formName, setFormName] = useState<string>("");
   const [fieldsSchema, setFieldsSchema] = useState<Record<string, FormField>>(
     {}
@@ -78,6 +80,7 @@ export const FormBuilderContextProvider = ({
     setFieldsOrder((prevOrder) => {
       return arrayMove(prevOrder, fromIndex, toIndex);
     });
+    setFormSaveStatus("DRAFT");
   };
   const deleteField = (fieldId: string) => {
     const fieldIndex = fieldsOrder.findIndex((id) => id === fieldId);
@@ -100,15 +103,18 @@ export const FormBuilderContextProvider = ({
   const loadForm = (data: Form) => {
     const fieldsSchema = data.fieldsSchema as Record<string, FormField>;
     const fieldsOrder = data.fieldsOrder as string[];
+    setActiveField(fieldsOrder[0] ?? undefined);
+    setFormName(data.name);
     setFieldsSchema(fieldsSchema);
     setFieldsOrder(fieldsOrder);
-    setFormName(data.name);
+    setFormId(data.id);
     setFormSaveStatus("SAVED");
   };
 
   return (
     <FormBuilderContext.Provider
       value={{
+        formId,
         fieldsSchema,
         updateFieldOrder,
         updateFieldSchema,

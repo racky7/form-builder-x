@@ -3,6 +3,7 @@ import {
   createFormInput,
   getUserFormInput,
   restoreOrDeleteFormInput,
+  updateFormInput,
 } from "./builder.input";
 import {
   createForm,
@@ -10,6 +11,7 @@ import {
   getUserForm,
   getUserForms,
   restoreUserForm,
+  updateUserForm,
 } from "./builder.service";
 
 export const builderRouter = router({
@@ -28,4 +30,7 @@ export const builderRouter = router({
   restoreForm: protectedProcedure
     .input(restoreOrDeleteFormInput)
     .mutation(({ input, ctx: { session } }) => restoreUserForm(input, session)),
+  updateUserForm: protectedProcedure
+    .input(updateFormInput)
+    .mutation(({ input, ctx: { session } }) => updateUserForm(input, session)),
 });
