@@ -29,11 +29,18 @@ const newFormConfig = z.object({
   name: z.string(),
 });
 
-export default function CreateFormModal() {
+export default function CreateFormModal({
+  open,
+  handleModal,
+}: {
+  open: boolean;
+  handleModal: (value: boolean) => void;
+}) {
   const router = useRouter();
   const createFormMutation = trpc.builder.createForm.useMutation({
     onSuccess: (data) => {
-      router.push(`/forms/${data.slug}/edit`);
+      handleModal(false);
+      router.push(`/form/${data.slug}/edit`);
     },
   });
   const form = useForm<z.infer<typeof newFormConfig>>({
@@ -44,13 +51,7 @@ export default function CreateFormModal() {
 
   return (
     <div>
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button>
-            <PlusIcon className="h-4 w-4 mr-1" /> <div>New Form</div>
-          </Button>
-        </DialogTrigger>
-
+      <Dialog open={open}>
         <DialogContent showCloseButton={false}>
           <Form {...form}>
             <form
@@ -78,7 +79,14 @@ export default function CreateFormModal() {
               </DialogHeader>
               <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline">Cancel</Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      handleModal?.(false);
+                    }}
+                  >
+                    Cancel
+                  </Button>
                 </DialogClose>
                 <Button disabled={createFormMutation.isLoading} type="submit">
                   Create Form

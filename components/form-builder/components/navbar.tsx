@@ -11,7 +11,7 @@ export default function Navbar() {
     <nav className="grid grid-cols-12 bg-white text-gray-700 items-center p-4 border-b border-slate-200">
       <div className="col-span-8 flex items-center">
         <Link
-          href="/forms"
+          href="/dashboard"
           className="p-2 block text-primary transition ease-in-out delay-150 hover:-translate-x-1"
         >
           <ArrowLeftIcon />

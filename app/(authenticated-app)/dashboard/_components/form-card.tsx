@@ -38,7 +38,7 @@ export default function FormCard({ id, name, slug, className }: FormCardProps) {
       )}
     >
       <Link
-        href={`/forms/${slug}/edit`}
+        href={`/form/${slug}/edit`}
         className="h-40 text-center flex items-center justify-center"
       >
         <h1 className="text-xl font-light px-2 line-clamp-4">{name}</h1>

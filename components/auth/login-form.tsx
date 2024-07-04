@@ -32,7 +32,7 @@ export default function LoginForm() {
       toast({
         title: "Login  successfull",
       });
-      router.push("/forms");
+      router.push("/dashboard");
     },
     onError: (error) => {
       toast({
