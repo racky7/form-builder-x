@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc/client";
-import { ArrowLeftIcon } from "lucide-react";
+import { ArrowLeftIcon, ExternalLinkIcon } from "lucide-react";
 import Link from "next/link";
 import { useFormBuilderContext } from "../context";
 import { cn } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 
-export default function Navbar() {
+type NavbarProps = {
+  formSlug: string;
+};
+
+export default function Navbar({ formSlug }: NavbarProps) {
   const { toast } = useToast();
   const { formId, formName, fieldsOrder, fieldsSchema, formSaveStatus } =
     useFormBuilderContext();
@@ -44,11 +48,15 @@ export default function Navbar() {
           </h1>
         </div>
       </div>
-      <div className="col-span-4 flex justify-end items-center">
+      <div className="col-span-4 flex space-x-2 justify-end items-center">
+        <Link href={`/forms/${formSlug}`} target="_blank">
+          <Button variant="ghost">
+            <ExternalLinkIcon className="h-4 w-4" />
+          </Button>
+        </Link>
         <Button
           disabled={formSaveStatus === "SAVED" || updateFormMutation.isLoading}
           onClick={() => {
-            console.log("this logged");
             updateFormMutation.mutate({
               id: formId!,
               fieldsOrder: fieldsOrder,

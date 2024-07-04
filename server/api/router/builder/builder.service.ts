@@ -90,4 +90,11 @@ export function restoreUserForm(
   });
 }
 
-export function getForm() {}
+export function getForm(input: z.infer<typeof getUserFormInput>) {
+  return prisma.form.findFirst({
+    where: {
+      slug: input.slug,
+      isDeleted: false,
+    },
+  });
+}

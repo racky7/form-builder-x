@@ -23,56 +23,58 @@ export default function FieldEditorPane() {
   const { field } = fieldsSchema[activeField];
 
   return (
-    <div className="w-72 h-fit p-4 text-sm grid space-y-8">
-      <div className="space-y-2">
-        <Label>Field Name</Label>
-        <TiptapEditor
-          key={activeField}
-          value={fieldsSchema[activeField].name}
-          onChange={(updatedValue) => {
-            updateFieldSchema(activeField, {
-              name: updatedValue,
-            });
-          }}
-        />
-      </div>
+    <div className="w-72 h-full border-l">
+      <div className=" p-4 text-sm grid space-y-8 ">
+        <div className="space-y-2">
+          <Label>Field Title</Label>
+          <TiptapEditor
+            key={activeField}
+            value={fieldsSchema[activeField].name}
+            onChange={(updatedValue) => {
+              updateFieldSchema(activeField, {
+                name: updatedValue,
+              });
+            }}
+          />
+        </div>
 
-      {match(field.type)
-        .returnType<React.ReactNode>()
-        .with("input", () => {
-          invariant(field.type === "input");
-          return (
-            <>
-              <div className="space-y-2">
-                <Label>Placeholder</Label>
-                <Input
-                  value={field.placeholder}
-                  onChange={(event) => {
-                    const updatedValue = event.target.value;
-                    updateFieldSchema(activeField, {
-                      field: { ...field, placeholder: updatedValue },
-                    });
-                  }}
-                />
-              </div>
-            </>
-          );
-        })
-        .with(P._, () => null)
-        .exhaustive()}
+        {match(field.type)
+          .returnType<React.ReactNode>()
+          .with("input", () => {
+            invariant(field.type === "input");
+            return (
+              <>
+                <div className="space-y-2">
+                  <Label>Placeholder</Label>
+                  <Input
+                    value={field.placeholder}
+                    onChange={(event) => {
+                      const updatedValue = event.target.value;
+                      updateFieldSchema(activeField, {
+                        field: { ...field, placeholder: updatedValue },
+                      });
+                    }}
+                  />
+                </div>
+              </>
+            );
+          })
+          .with(P._, () => null)
+          .exhaustive()}
 
-      <div className="items-top flex space-x-2">
-        <Checkbox id="required_check" />
-        <div className="grid gap-1.5 leading-none">
-          <label
-            htmlFor="required_check"
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-          >
-            Required field
-          </label>
-          <p className="text-sm text-muted-foreground">
-            If checked, users will be required to complete this field.
-          </p>
+        <div className="items-top flex space-x-2">
+          <Checkbox id="required_check" />
+          <div className="grid gap-1.5 leading-none">
+            <label
+              htmlFor="required_check"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Required field
+            </label>
+            <p className="text-sm text-muted-foreground">
+              If checked, users will be required to complete this field.
+            </p>
+          </div>
         </div>
       </div>
     </div>

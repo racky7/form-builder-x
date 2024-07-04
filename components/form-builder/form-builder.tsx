@@ -20,9 +20,9 @@ import { trpc } from "@/lib/trpc/client";
 import { useParams } from "next/navigation";
 
 function BuilderArea() {
-  const params = useParams<{ formId: string }>();
+  const params = useParams<{ formSlug: string }>();
   const getFormDataQuery = trpc.builder.getUserForm.useQuery({
-    slug: params.formId,
+    slug: params.formSlug,
   });
 
   const { addFieldSchema, fieldsOrder, updateFieldOrder, loadForm } =
@@ -69,7 +69,7 @@ function BuilderArea() {
       collisionDetection={collisonDetection}
     >
       <div className="w-full h-screen flex flex-col">
-        <Navbar />
+        <Navbar formSlug={params.formSlug} />
         <div className="flex-1 flex overflow-y-auto">
           <ElementsPane />
           <SortableContext

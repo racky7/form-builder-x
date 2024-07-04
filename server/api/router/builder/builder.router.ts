@@ -8,6 +8,7 @@ import {
 import {
   createForm,
   deleteUserForm,
+  getForm,
   getUserForm,
   getUserForms,
   restoreUserForm,
@@ -15,6 +16,9 @@ import {
 } from "./builder.service";
 
 export const builderRouter = router({
+  getForm: publicProcedure
+    .input(getUserFormInput)
+    .query(({ input }) => getForm(input)),
   getUserForms: protectedProcedure.query(({ ctx: { session } }) =>
     getUserForms(session)
   ),
