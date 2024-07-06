@@ -37,11 +37,11 @@ const form = formField.array();
 export type Form = z.infer<typeof form>;
 
 export const generateValidationSchema = (
-  formSchema: Record<string, FormField>
+  fieldsSchema: Record<string, FormField>
 ) => {
   let validationSchema = z.object({});
 
-  for (const [id, { field, required }] of Object.entries(formSchema)) {
+  for (const [id, { field, required }] of Object.entries(fieldsSchema)) {
     let validation;
     if (field.type === "input") {
       validation =
