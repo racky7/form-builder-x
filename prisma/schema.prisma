@@ -53,13 +53,22 @@ enum SaveStatus {
 }
 
 model Form {
-  id           String     @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  slug         String     @unique
-  fieldsSchema Json       @default("{}")
-  fieldsOrder  Json       @default("[]")
-  user         User       @relation(fields: [userId], references: [id])
-  userId       String     @db.ObjectId
-  saveStatus   SaveStatus @default(DRAFT)
-  isDeleted    Boolean    @default(false)
+  id             String           @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  slug           String           @unique
+  fieldsSchema   Json             @default("{}")
+  fieldsOrder    Json             @default("[]")
+  user           User             @relation(fields: [userId], references: [id])
+  userId         String           @db.ObjectId
+  saveStatus     SaveStatus       @default(DRAFT)
+  isDeleted      Boolean          @default(false)
+  FormSubmission FormSubmission[]
+}
+
+model FormSubmission {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  form         Form     @relation(fields: [formId], references: [id])
+  formId       String   @db.ObjectId
+  submission   Json     @default("{}")
+  submitted_at DateTime
 }
