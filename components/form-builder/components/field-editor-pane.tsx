@@ -20,7 +20,7 @@ export default function FieldEditorPane() {
     );
   }
 
-  const { field } = fieldsSchema[activeField];
+  const { field, required } = fieldsSchema[activeField];
 
   return (
     <div className="w-72 h-full border-l">
@@ -48,6 +48,7 @@ export default function FieldEditorPane() {
                   <Label>Placeholder</Label>
                   <Input
                     value={field.placeholder}
+                    className="focus-within:ring-gray-500 focus-within:border-gray-500"
                     onChange={(event) => {
                       const updatedValue = event.target.value;
                       updateFieldSchema(activeField, {
@@ -63,7 +64,15 @@ export default function FieldEditorPane() {
           .exhaustive()}
 
         <div className="items-top flex space-x-2">
-          <Checkbox id="required_check" />
+          <Checkbox
+            id="required_check"
+            checked={required}
+            onCheckedChange={(updatedValue: boolean) => {
+              updateFieldSchema(activeField, {
+                required: updatedValue!,
+              });
+            }}
+          />
           <div className="grid gap-1.5 leading-none">
             <label
               htmlFor="required_check"

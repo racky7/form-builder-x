@@ -84,7 +84,11 @@ export default function Page() {
               className="flex flex-col space-y-3 max-w-[640px] w-full h-full pt-3"
             >
               {fieldsOrder.map((fieldId) => {
-                const { name, field: formField } = fieldsSchema[fieldId];
+                const {
+                  name,
+                  field: formField,
+                  required,
+                } = fieldsSchema[fieldId];
                 return match(formField.type)
                   .returnType<React.ReactNode>()
                   .with("input", () => {
@@ -109,12 +113,17 @@ export default function Page() {
                                 <div className="w-full h-4 flex"></div>
                                 <FormItem className="space-y-3 px-6 pb-6">
                                   <FormLabel asChild>
-                                    <div
-                                      className="text-sm"
-                                      dangerouslySetInnerHTML={{
-                                        __html: name,
-                                      }}
-                                    />
+                                    <div className="text-sm flex space-x-1">
+                                      <div
+                                        className="text-gray-700"
+                                        dangerouslySetInnerHTML={{
+                                          __html: name,
+                                        }}
+                                      />
+                                      {required ? (
+                                        <span className="text-red-500">*</span>
+                                      ) : null}
+                                    </div>
                                   </FormLabel>
                                   <FormControl>
                                     <Input
@@ -147,12 +156,17 @@ export default function Page() {
                                 <div className="w-full h-4 flex"></div>
                                 <FormItem className="space-y-3 px-6 pb-6">
                                   <FormLabel asChild>
-                                    <div
-                                      className="text-sm"
-                                      dangerouslySetInnerHTML={{
-                                        __html: name,
-                                      }}
-                                    />
+                                    <div className="text-sm flex space-x-1">
+                                      <div
+                                        className="text-gray-700"
+                                        dangerouslySetInnerHTML={{
+                                          __html: name,
+                                        }}
+                                      />
+                                      {required ? (
+                                        <span className="text-red-500">*</span>
+                                      ) : null}
+                                    </div>
                                   </FormLabel>
                                   <FormControl>
                                     <Textarea

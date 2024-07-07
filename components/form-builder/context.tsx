@@ -75,6 +75,9 @@ export const FormBuilderContextProvider = ({
     const currentFieldSchema = fieldsSchema[fieldId];
     const updatedFieldSchema = deepmerge(currentFieldSchema, updatedField);
     setFieldsSchema({ ...fieldsSchema, [fieldId]: updatedFieldSchema });
+    if (formSaveStatus === "SAVED") {
+      setFormSaveStatus("DRAFT");
+    }
   };
   const updateFieldOrder = (fromIndex: number, toIndex: number) => {
     setFieldsOrder((prevOrder) => {

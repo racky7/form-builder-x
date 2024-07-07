@@ -70,7 +70,10 @@ export default function FieldCard({
         <GripHorizontalIcon className="h-4 w-4 text-gray-400" />
       </div>
       <div className="space-y-2 px-6 pb-6 cursor-auto">
-        <div className="text-sm" dangerouslySetInnerHTML={{ __html: name }} />
+        <div className="text-sm flex space-x-1">
+          <div dangerouslySetInnerHTML={{ __html: name }} />
+          {required ? <span className="text-red-500">*</span> : null}
+        </div>
         {match(field.type)
           .returnType<React.ReactNode>()
           .with("input", () => {
