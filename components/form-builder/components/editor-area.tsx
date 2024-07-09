@@ -1,11 +1,11 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useFormBuilderContext } from "../context";
 
 import { Fragment } from "react";
 import FieldDroppable from "./field-droppable";
 import SortableFieldCard from "./sortable-field-card";
+import { useFormBuilderContext } from "@/context";
 
 type EditorAreaProps = {
   className?: string;
@@ -13,7 +13,7 @@ type EditorAreaProps = {
 };
 
 export default function EditorArea({ className, isLoading }: EditorAreaProps) {
-  const { fieldsOrder, fieldsSchema } = useFormBuilderContext();
+  const { fieldsOrder } = useFormBuilderContext();
 
   return (
     <div

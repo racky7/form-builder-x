@@ -1,12 +1,12 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { useFormBuilderContext } from "../context";
 import TiptapEditor from "@/components/tiptap-editor/tiptap-editor";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { P, match } from "ts-pattern";
 import invariant from "tiny-invariant";
+import { useFormBuilderContext } from "@/context";
 
 export default function FieldEditorPane() {
   const { activeField, fieldsSchema, updateFieldSchema } =

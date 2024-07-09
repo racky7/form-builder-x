@@ -33,7 +33,7 @@ export const {
   },
   callbacks: {
     async session({ token, session }: { session: Session; token?: any }) {
-      console.log({ sessionToken: token });
+      // console.log({ sessionToken: token });
       if (token.sub && session.user) {
         session.user.id = token.sub;
       }

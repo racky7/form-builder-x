@@ -2,8 +2,8 @@
 
 import { FORM_FIELD_CONFIG, FORM_FIELD_ITEMS } from "@/lib/form-elements";
 import React, { useContext } from "react";
-import { useFormBuilderContext } from "../context";
 import ElementCard from "./element-card";
+import { useFormBuilderContext } from "@/context";
 
 export default function ElementsPane() {
   const { addFieldSchema } = useFormBuilderContext();

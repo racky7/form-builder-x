@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormBuilderContext } from "../context";
+import { useFormBuilderContext } from "@/context";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import FieldCard from "./field-card";

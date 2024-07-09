@@ -55,7 +55,6 @@ export default function CreateFormModal({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(({ name }) => {
-                console.log("this function is called");
                 createFormMutation.mutate({ name });
               })}
             >

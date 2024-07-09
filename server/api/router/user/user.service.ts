@@ -68,7 +68,6 @@ export async function logInUser({
       },
     });
   } catch (error) {
-    console.log("error ->", error);
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
