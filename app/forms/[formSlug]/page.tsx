@@ -88,7 +88,7 @@ export default function Page() {
       >;
 
       return (
-        <div className="bg-primary/10 w-full min-h-screen flex flex-col items-center">
+        <div className="bg-primary/10 w-full min-h-screen flex flex-col items-center px-4 md:px-0">
           {collectFormDataMutation.isSuccess ? (
             <div className="w-full max-w-[640px] mt-3 p-4 bg-white rounded-lg border-gray-300 border-t-8 border-primary space-y-4">
               <div className="text-2xl">{formData?.name}</div>
