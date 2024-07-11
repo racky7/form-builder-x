@@ -1,3 +1,5 @@
+import FormSubmissions from "@/components/form-submissions";
+
 export default function Page() {
-  return <div className="w-full h-full">Form Submissions</div>;
+  return <FormSubmissions />;
 }

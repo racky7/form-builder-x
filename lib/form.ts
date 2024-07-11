@@ -128,3 +128,10 @@ export const generateInitialFieldData = (type: FieldType) => {
 
   return initialData;
 };
+
+export const submissionsDataConfig = z.array(
+  z.object({
+    submission: z.record(z.string(), z.string().nullable()),
+    // submitted_at: z.date(),
+  })
+);

@@ -7,5 +7,5 @@ export const collectFormSubmissionInput = z.object({
 });
 
 export const getFormSubmissionsInput = z.object({
-  formId: objectId,
+  formSlug: z.string(),
 });
