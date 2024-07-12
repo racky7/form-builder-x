@@ -45,36 +45,50 @@ export default function SubmissionsTable({
   });
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
+    <div className="rounded-md">
+      <Table className="min-w-full border border-gray-200">
+        <TableHeader className="bg-gray-50">
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} className="h-1">
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                  <TableHead
+                    key={header.id}
+                    className="border border-gray-200 text-sm text-gray-700  pl-4 pr-4 sm:pl-6"
+                  >
+                    <div className="py-5 truncate">
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </div>
                   </TableHead>
                 );
               })}
             </TableRow>
           ))}
         </TableHeader>
-        <TableBody>
+        <TableBody className="bg-white">
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && "selected"}
+                className="hover:bg-gray-100"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  <TableCell
+                    key={cell.id}
+                    className="max-w-60 border border-gray-200 min-w-20 pl-4 pr-4 text-sm text-gray-700 sm:pl-6"
+                  >
+                    <div className="py-4 truncate">
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </div>
                   </TableCell>
                 ))}
               </TableRow>
