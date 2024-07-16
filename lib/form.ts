@@ -17,8 +17,9 @@ const field = z.discriminatedUnion("type", [
     placeholder: z.string(),
   }),
   z.object({
-    type: z.literal("select"),
+    type: z.literal("dropdown"),
     options: z.array(z.object({ _id: z.string(), name: z.string() })).min(1),
+    placeholder: z.string(),
   }),
   z.object({
     type: z.literal("date"),
@@ -48,7 +49,7 @@ export const generateValidationSchema = (
         field.inputType === "short-input" ? z.string().max(255) : z.string();
     } else if (field.type === "checkbox") {
       validation = z.boolean();
-    } else if (field.type === "select") {
+    } else if (field.type === "dropdown") {
       const options = field.options.map((item) => item.name) as [
         string,
         ...string[]
@@ -117,6 +118,18 @@ export const generateInitialFieldData = (type: FieldType) => {
         field: {
           type: "number-input",
           placeholder: "1234567890",
+        },
+        required: false,
+      };
+      break;
+    }
+    case "dropdown": {
+      initialData = {
+        name: "Dropdown",
+        field: {
+          type: "dropdown",
+          options: [],
+          placeholder: "Please select an option",
         },
         required: false,
       };

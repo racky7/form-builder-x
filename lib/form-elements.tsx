@@ -1,5 +1,11 @@
 import z from "zod";
-import { TypeIcon, TextIcon, SquareCheckIcon, HashIcon } from "lucide-react";
+import {
+  TypeIcon,
+  TextIcon,
+  SquareCheckIcon,
+  HashIcon,
+  ListIcon,
+} from "lucide-react";
 import { FormField } from "./form";
 
 export const fieldType = z.enum([
@@ -7,7 +13,7 @@ export const fieldType = z.enum([
   "long-input",
   "checkbox",
   "number-input",
-  //   "select",
+  "dropdown",
   //   "date",
   //   "dateTime",
   //   "time",
@@ -25,6 +31,7 @@ export const FORM_FIELD_ITEMS: FieldType[] = [
   "long-input",
   "checkbox",
   "number-input",
+  "dropdown",
 ];
 
 export const FORM_FIELD_CONFIG: Record<FieldType, FieldConfig> = {
@@ -47,5 +54,10 @@ export const FORM_FIELD_CONFIG: Record<FieldType, FieldConfig> = {
     type: "number-input",
     icon: <HashIcon className="h-6 w-6" />,
     name: "Number",
+  },
+  dropdown: {
+    type: "dropdown",
+    icon: <ListIcon className="h-6 w-6" />,
+    name: "Dropdown",
   },
 };
