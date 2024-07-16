@@ -91,7 +91,7 @@ export function restoreUserForm(
 }
 
 export function getForm(input: z.infer<typeof getUserFormInput>) {
-  return prisma.form.findFirst({
+  return prisma.form.findUnique({
     where: {
       slug: input.slug,
       isDeleted: false,

@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
+import Link from "next/link";
 
 export default function Page() {
   const params = useParams<{ formSlug: string }>();
@@ -53,6 +54,7 @@ export default function Page() {
       useMemo(() => {
         let validationSchema = z.object({});
         if (formData) {
+          console.log(formData);
           const fieldsSchema = formData.fieldsSchema as Record<
             string,
             FormFieldType
@@ -75,14 +77,32 @@ export default function Page() {
   return match({ status })
     .returnType<React.ReactNode>()
     .with({ status: "loading" }, () => {
-      return <div className="w-full h-full bg-primary/10" />;
+      return (
+        <div className="w-full h-full flex justify-center items-center bg-primary/10">
+          <h1 className="text-xl text-gray-600 font-light text-center">
+            Loading...
+          </h1>
+        </div>
+      );
     })
     .with({ status: "error" }, () => {
       return <div />;
     })
     .with({ status: "success" }, () => {
-      const fieldsOrder = formData?.fieldsOrder as string[];
-      const fieldsSchema = formData?.fieldsSchema as Record<
+      if (!formData) {
+        return (
+          <div className="w-full h-full flex flex-col justify-center items-center bg-primary/10">
+            <h1 className="text-xl text-gray-600 font-light text-center">
+              The form you are looking for is not found.
+            </h1>
+            <Link href="/" className="mt-6">
+              <Button size="lg">Create your own form</Button>
+            </Link>
+          </div>
+        );
+      }
+      const fieldsOrder = formData.fieldsOrder as string[];
+      const fieldsSchema = formData.fieldsSchema as Record<
         string,
         FormFieldType
       >;
@@ -91,19 +111,19 @@ export default function Page() {
         <div className="bg-primary/10 w-full min-h-screen flex flex-col items-center px-4 md:px-0">
           {collectFormDataMutation.isSuccess ? (
             <div className="w-full max-w-[640px] mt-3 p-4 bg-white rounded-lg border-gray-300 border-t-8 border-primary space-y-4">
-              <div className="text-2xl">{formData?.name}</div>
+              <div className="text-2xl">{formData.name}</div>
               <div className="text-sm">Thanks for responding!</div>
             </div>
           ) : (
             <Form {...form}>
               <div className="w-full max-w-[640px] mt-3 p-4 bg-white rounded-lg border border-gray-300 border-t-8 border-t-primary">
-                <div className="text-2xl">{formData?.name}</div>
+                <div className="text-2xl">{formData.name}</div>
               </div>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="flex flex-col space-y-3 max-w-[640px] w-full h-full pt-3"
               >
-                {fieldsOrder.map((fieldId) => {
+                {fieldsOrder?.map((fieldId) => {
                   const {
                     name,
                     field: formField,
