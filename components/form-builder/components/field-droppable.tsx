@@ -44,10 +44,13 @@ export default function FieldDroppable({
       className={cn(droppableVariant({ size }), className)}
       style={style}
     >
-      {isOver ? (
+      {size === "full-size" ? (
         <>
           <RectangleHorizontalIcon className="h-6 w-6" />
-          <div>Drop here to add an field</div>
+          <div>
+            Drag fields from the left panel and drop here to add them to your
+            form.
+          </div>
         </>
       ) : null}
     </div>

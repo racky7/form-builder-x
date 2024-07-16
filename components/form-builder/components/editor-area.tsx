@@ -40,7 +40,9 @@ export default function EditorArea({ className, isLoading }: EditorAreaProps) {
         })
       )}
       {fieldsOrder.length === 0 ? (
-        <FieldDroppable size="full-size" index={0} />
+        <div className="h-full w-full border-2 border-dashed">
+          <FieldDroppable size="full-size" index={0} />
+        </div>
       ) : (
         <FieldDroppable size="slot" index={fieldsOrder.length} />
       )}

@@ -79,7 +79,7 @@ export const generateInitialFieldData = (type: FieldType) => {
   switch (type) {
     case "short-input": {
       initialData = {
-        name: "<p>Field Name</p>",
+        name: "<p>Short Text</p>",
         field: {
           type: "input",
           inputType: "short-input",
@@ -91,7 +91,7 @@ export const generateInitialFieldData = (type: FieldType) => {
     }
     case "long-input": {
       initialData = {
-        name: "Field Name",
+        name: "Long Text",
         field: {
           type: "input",
           inputType: "long-input",
@@ -103,7 +103,7 @@ export const generateInitialFieldData = (type: FieldType) => {
     }
     case "checkbox": {
       initialData = {
-        name: "Field Name",
+        name: "Checkbox",
         field: {
           type: "checkbox",
         },
@@ -113,7 +113,7 @@ export const generateInitialFieldData = (type: FieldType) => {
     }
     case "number-input": {
       initialData = {
-        name: "Field Name",
+        name: "Number",
         field: {
           type: "number-input",
           placeholder: "1234567890",

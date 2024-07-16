@@ -9,9 +9,15 @@ import invariant from "tiny-invariant";
 import { useFormBuilderContext } from "@/context";
 
 export default function FieldEditorPane() {
-  const { activeField, fieldsSchema, updateFieldSchema } =
+  const { activeField, fieldsSchema, fieldsOrder, updateFieldSchema } =
     useFormBuilderContext();
-
+  if (fieldsOrder.length === 0) {
+    return (
+      <div className="w-72 h-full flex items-center justify-center p-4 text-xs">
+        Field editor options will appear here.
+      </div>
+    );
+  }
   if (!activeField) {
     return (
       <div className="w-72 h-full flex items-center justify-center p-4 text-xs">
@@ -26,7 +32,7 @@ export default function FieldEditorPane() {
     <div className="w-72 h-full border-l">
       <div className=" p-4 text-sm grid space-y-8 ">
         <div className="space-y-2">
-          <Label>Field Title</Label>
+          <Label>Field Label</Label>
           <TiptapEditor
             key={activeField}
             value={fieldsSchema[activeField].name}
@@ -37,7 +43,6 @@ export default function FieldEditorPane() {
             }}
           />
         </div>
-
         {match(field.type)
           .returnType<React.ReactNode>()
           .with("input", () => {
