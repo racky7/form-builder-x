@@ -17,7 +17,8 @@ export type FormBuilderContextType = {
   addFieldSchema: (type: FieldType, index: number) => void;
   updateFieldSchema: (
     fieldId: string,
-    updatedField: Partial<FormField>
+    updatedField: Partial<FormField>,
+    type?: "replace" | "merge"
   ) => void;
 
   fieldsOrder: string[];
@@ -70,10 +71,17 @@ export const FormBuilderContextProvider = ({
   };
   const updateFieldSchema = (
     fieldId: string,
-    updatedField: Partial<FormField>
+    updatedField: Partial<FormField> | FormField,
+    type: "replace" | "merge" = "merge"
   ) => {
     const currentFieldSchema = fieldsSchema[fieldId];
-    const updatedFieldSchema = deepmerge(currentFieldSchema, updatedField);
+    let updatedFieldSchema;
+
+    if (type === "replace") {
+      updatedFieldSchema = { ...currentFieldSchema, ...updatedField };
+    } else {
+      updatedFieldSchema = deepmerge(currentFieldSchema, updatedField);
+    }
     setFieldsSchema({ ...fieldsSchema, [fieldId]: updatedFieldSchema });
     if (formSaveStatus === "SAVED") {
       setFormSaveStatus("DRAFT");

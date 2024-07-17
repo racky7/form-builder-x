@@ -1,5 +1,6 @@
 import z from "zod";
 import { FieldType } from "./form-elements";
+import { uid } from "uid";
 
 const field = z.discriminatedUnion("type", [
   z.object({
@@ -128,7 +129,10 @@ export const generateInitialFieldData = (type: FieldType) => {
         name: "Dropdown",
         field: {
           type: "dropdown",
-          options: [],
+          options: [
+            { _id: uid(), name: "Option 1" },
+            { _id: uid(), name: "Option 2" },
+          ],
           placeholder: "Please select an option",
         },
         required: false,
