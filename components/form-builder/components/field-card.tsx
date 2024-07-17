@@ -3,7 +3,6 @@ import invariant from "tiny-invariant";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FormField } from "@/lib/form";
-import { Label } from "@/components/ui/label";
 import { GripHorizontalIcon, Trash2Icon, TrashIcon } from "lucide-react";
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
@@ -15,6 +14,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 type DndDraggableProps = {
   attributes?: DraggableAttributes;
@@ -101,6 +101,19 @@ export default function FieldCard({
                 );
               })
               .exhaustive();
+          })
+          .with("dropdown", () => {
+            invariant(field.type === "dropdown");
+            return (
+              <Select>
+                <SelectTrigger className="w-full select-none pointer-events-none text-muted-foreground">
+                  <SelectValue
+                    placeholder={field.placeholder}
+                    className="text-opacity-50"
+                  />
+                </SelectTrigger>
+              </Select>
+            );
           })
           .with(P._, () => null)
           .exhaustive()}

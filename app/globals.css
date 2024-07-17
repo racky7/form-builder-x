@@ -80,3 +80,8 @@ body,
     @apply bg-background text-foreground;
   }
 }
+
+.ProseMirror-focused {
+  outline: none;
+  border: 2px solid gray;
+}

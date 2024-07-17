@@ -14,7 +14,7 @@ export default function TiptapEditor({ value, onChange }: TiptapEditorProps) {
     extensions: [StarterKit],
     editorProps: {
       attributes: {
-        class: "min-h-14 h-auto p-1 border border-input rounded-sm",
+        class: "min-h-14 h-auto p-1 border border-input rounded-md",
       },
     },
     content: value,

@@ -19,6 +19,13 @@ import {
 import { useMemo } from "react";
 import invariant from "tiny-invariant";
 import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -227,6 +234,66 @@ export default function Page() {
                         })
                         .with(P._, () => null)
                         .exhaustive();
+                    })
+                    .with("dropdown", () => {
+                      invariant(formField.type === "dropdown");
+                      return (
+                        <FormField
+                          control={form.control}
+                          key={fieldId}
+                          name={fieldId}
+                          render={({ field }) => (
+                            <div
+                              className={cn(
+                                "w-full bg-white rounded-lg border pt-1 border-gray-300",
+                                form.formState.errors[fieldId] !== undefined
+                                  ? "border-red-500"
+                                  : null
+                              )}
+                            >
+                              <div className="w-full h-4 flex"></div>
+                              <FormItem className="space-y-3 px-6 pb-6">
+                                <FormLabel asChild>
+                                  <div className="text-sm flex space-x-1">
+                                    <div
+                                      className="text-gray-700"
+                                      dangerouslySetInnerHTML={{
+                                        __html: name,
+                                      }}
+                                    />
+                                    {required ? (
+                                      <span className="text-red-500">*</span>
+                                    ) : null}
+                                  </div>
+                                </FormLabel>
+                                <Select
+                                  onValueChange={field.onChange}
+                                  defaultValue={field.value}
+                                >
+                                  <FormControl>
+                                    <SelectTrigger>
+                                      <SelectValue
+                                        placeholder={formField.placeholder}
+                                      />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    {formField.options.map((option) => (
+                                      <SelectItem
+                                        key={option._id}
+                                        value={option.name}
+                                      >
+                                        {option.name}
+                                      </SelectItem>
+                                    ))}
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            </div>
+                          )}
+                        />
+                      );
                     })
                     .with(P._, () => null)
                     .exhaustive();
