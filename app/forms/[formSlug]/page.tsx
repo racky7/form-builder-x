@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc/client";
 import { useParams } from "next/navigation";
 import { P, match } from "ts-pattern";
 import { useForm } from "react-hook-form";
+import { format } from "date-fns";
 import {
   Form,
   FormControl,
@@ -26,12 +27,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
+import FieldContainer from "./_components/field-container";
+import { CalendarIcon } from "lucide-react";
 
 export default function Page() {
   const params = useParams<{ formSlug: string }>();
@@ -149,15 +158,11 @@ export default function Page() {
                               key={fieldId}
                               name={fieldId}
                               render={({ field }) => (
-                                <div
-                                  className={cn(
-                                    "w-full bg-white rounded-lg border pt-1 border-gray-300",
+                                <FieldContainer
+                                  isError={
                                     form.formState.errors[fieldId] !== undefined
-                                      ? "border-red-500"
-                                      : null
-                                  )}
+                                  }
                                 >
-                                  <div className="w-full h-4 flex"></div>
                                   <FormItem className="space-y-3 px-6 pb-6">
                                     <FormLabel asChild>
                                       <div className="text-sm flex space-x-1">
@@ -182,7 +187,7 @@ export default function Page() {
                                     </FormControl>
                                     <FormMessage />
                                   </FormItem>
-                                </div>
+                                </FieldContainer>
                               )}
                             />
                           );
@@ -194,15 +199,11 @@ export default function Page() {
                               key={fieldId}
                               name={fieldId}
                               render={({ field }) => (
-                                <div
-                                  className={cn(
-                                    "w-full bg-white rounded-lg border pt-1 border-gray-300",
+                                <FieldContainer
+                                  isError={
                                     form.formState.errors[fieldId] !== undefined
-                                      ? "border-red-500"
-                                      : null
-                                  )}
+                                  }
                                 >
-                                  <div className="w-full h-4 flex"></div>
                                   <FormItem className="space-y-3 px-6 pb-6">
                                     <FormLabel asChild>
                                       <div className="text-sm flex space-x-1">
@@ -227,7 +228,7 @@ export default function Page() {
                                     </FormControl>
                                     <FormMessage />
                                   </FormItem>
-                                </div>
+                                </FieldContainer>
                               )}
                             />
                           );
@@ -243,15 +244,11 @@ export default function Page() {
                           key={fieldId}
                           name={fieldId}
                           render={({ field }) => (
-                            <div
-                              className={cn(
-                                "w-full bg-white rounded-lg border pt-1 border-gray-300",
+                            <FieldContainer
+                              isError={
                                 form.formState.errors[fieldId] !== undefined
-                                  ? "border-red-500"
-                                  : null
-                              )}
+                              }
                             >
-                              <div className="w-full h-4 flex"></div>
                               <FormItem className="space-y-3 px-6 pb-6">
                                 <FormLabel asChild>
                                   <div className="text-sm flex space-x-1">
@@ -290,7 +287,73 @@ export default function Page() {
                                 </Select>
                                 <FormMessage />
                               </FormItem>
-                            </div>
+                            </FieldContainer>
+                          )}
+                        />
+                      );
+                    })
+                    .with("date", () => {
+                      invariant(formField.type === "date");
+                      return (
+                        <FormField
+                          control={form.control}
+                          key={fieldId}
+                          name={fieldId}
+                          render={({ field }) => (
+                            <FieldContainer
+                              isError={
+                                form.formState.errors[fieldId] !== undefined
+                              }
+                            >
+                              <FormItem className="space-y-3 px-6 pb-6">
+                                <FormLabel asChild>
+                                  <div className="text-sm flex space-x-1">
+                                    <div
+                                      className="text-gray-700"
+                                      dangerouslySetInnerHTML={{
+                                        __html: name,
+                                      }}
+                                    />
+                                    {required ? (
+                                      <span className="text-red-500">*</span>
+                                    ) : null}
+                                  </div>
+                                </FormLabel>
+                                <Popover>
+                                  <PopoverTrigger asChild>
+                                    <FormControl>
+                                      <Button
+                                        variant={"outline"}
+                                        className={cn(
+                                          "w-full pl-3 text-left font-normal",
+                                          !field.value &&
+                                            "text-muted-foreground"
+                                        )}
+                                      >
+                                        {field.value ? (
+                                          format(field.value, "PPP")
+                                        ) : (
+                                          <span>Pick a date</span>
+                                        )}
+                                        <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                      </Button>
+                                    </FormControl>
+                                  </PopoverTrigger>
+                                  <PopoverContent
+                                    className="w-auto p-0"
+                                    align="start"
+                                  >
+                                    <Calendar
+                                      mode="single"
+                                      selected={field.value}
+                                      onSelect={field.onChange}
+                                      initialFocus
+                                    />
+                                  </PopoverContent>
+                                </Popover>
+                                <FormMessage />
+                              </FormItem>
+                            </FieldContainer>
                           )}
                         />
                       );

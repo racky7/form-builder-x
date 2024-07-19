@@ -25,7 +25,7 @@ export async function collectFormSubmission(
   const formFields = currentForm.fieldsOrder as string[];
   const submissionData = formFields.reduce((acc, fieldId) => {
     return { ...acc, [fieldId]: input.submission[fieldId] ?? null };
-  }, {} as { [fieldId: string]: string | null });
+  }, {} as { [fieldId: string]: string | Date | null });
   return prisma.formSubmission.create({
     data: {
       formId: input.formId,

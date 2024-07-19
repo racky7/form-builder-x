@@ -24,7 +24,7 @@ const field = z.discriminatedUnion("type", [
   }),
   z.object({
     type: z.literal("date"),
-    inputType: z.enum(["date", "dateTime", "time"]),
+    inputType: z.enum(["date", "date-time"]),
   }),
 ]);
 
@@ -64,6 +64,8 @@ export const generateValidationSchema = (
       if (typeof field.max === "number") {
         validation = validation.max(field.max);
       }
+    } else if (field.type === "date") {
+      validation = z.date();
     }
 
     if (validation) {
@@ -134,6 +136,17 @@ export const generateInitialFieldData = (type: FieldType) => {
             { _id: uid(), name: "Option 2" },
           ],
           placeholder: "Please select an option",
+        },
+        required: false,
+      };
+      break;
+    }
+    case "date": {
+      initialData = {
+        name: "Date",
+        field: {
+          type: "date",
+          inputType: "date",
         },
         required: false,
       };

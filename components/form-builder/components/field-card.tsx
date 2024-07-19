@@ -3,7 +3,7 @@ import invariant from "tiny-invariant";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { FormField } from "@/lib/form";
-import { GripHorizontalIcon, Trash2Icon, TrashIcon } from "lucide-react";
+import { CalendarIcon, GripHorizontalIcon, Trash2Icon } from "lucide-react";
 import { DraggableAttributes } from "@dnd-kit/core";
 import { SyntheticListenerMap } from "@dnd-kit/core/dist/hooks/utilities";
 import { cn } from "@/lib/utils";
@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
 
 type DndDraggableProps = {
   attributes?: DraggableAttributes;
@@ -113,6 +114,18 @@ export default function FieldCard({
                   />
                 </SelectTrigger>
               </Select>
+            );
+          })
+          .with("date", () => {
+            invariant(field.type === "date");
+            return (
+              <Button
+                variant={"outline"}
+                className="w-full pl-3 text-left font-normal text-muted-foreground select-none pointer-events-none"
+              >
+                <span>dd/mm/yyyy</span>
+                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
             );
           })
           .with(P._, () => null)

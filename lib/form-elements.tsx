@@ -5,6 +5,7 @@ import {
   SquareCheckIcon,
   HashIcon,
   ListIcon,
+  CalendarDaysIcon,
 } from "lucide-react";
 import { FormField } from "./form";
 
@@ -14,7 +15,7 @@ export const fieldType = z.enum([
   "checkbox",
   "number-input",
   "dropdown",
-  //   "date",
+  "date",
   //   "dateTime",
   //   "time",
 ]);
@@ -32,6 +33,7 @@ export const FORM_FIELD_ITEMS: FieldType[] = [
   "checkbox",
   "number-input",
   "dropdown",
+  "date",
 ];
 
 export const FORM_FIELD_CONFIG: Record<FieldType, FieldConfig> = {
@@ -59,5 +61,10 @@ export const FORM_FIELD_CONFIG: Record<FieldType, FieldConfig> = {
     type: "dropdown",
     icon: <ListIcon className="h-6 w-6" />,
     name: "Dropdown",
+  },
+  date: {
+    type: "date",
+    icon: <CalendarDaysIcon className="h-6 w-6" />,
+    name: "Date",
   },
 };
