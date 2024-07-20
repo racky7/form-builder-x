@@ -18,7 +18,7 @@ import {
 import { useFormBuilderContext } from "@/context";
 
 type SingleSubmission = {
-  [fieldId: string]: string | null;
+  [fieldId: string]: string | string[] | null;
 };
 
 type SubmissionsTableProps = {
@@ -78,19 +78,21 @@ export default function SubmissionsTable({
                 data-state={row.getIsSelected() && "selected"}
                 className="hover:bg-gray-100"
               >
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    className="max-w-60 border border-gray-200 min-w-20 pl-4 pr-4 text-sm text-gray-700 sm:pl-6"
-                  >
-                    <div className="py-4 truncate">
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </div>
-                  </TableCell>
-                ))}
+                {row.getVisibleCells().map((cell) => {
+                  return (
+                    <TableCell
+                      key={cell.id}
+                      className="max-w-60 border border-gray-200 min-w-20 pl-4 pr-4 text-sm text-gray-700 sm:pl-6"
+                    >
+                      <div className="py-4 truncate">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </div>
+                    </TableCell>
+                  );
+                })}
               </TableRow>
             ))
           ) : (

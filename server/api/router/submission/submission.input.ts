@@ -5,7 +5,7 @@ export const collectFormSubmissionInput = z.object({
   formId: objectId,
   submission: z.record(
     z.string(),
-    z.string().optional().or(z.date().optional())
+    z.string().optional().or(z.date().optional()).or(z.array(z.string()))
   ),
 });
 

@@ -41,6 +41,7 @@ import { Textarea } from "@/components/ui/textarea";
 import Link from "next/link";
 import FieldContainer from "./_components/field-container";
 import { CalendarIcon } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function Page() {
   const params = useParams<{ formSlug: string }>();
@@ -56,21 +57,29 @@ export default function Page() {
   const form = useForm<any>({
     mode: "all",
     defaultValues: useMemo(() => {
-      let defaultValuesObject: Record<string, string> = {};
+      let defaultValuesObject: Record<string, string | string[]> = {};
 
       if (formData) {
         const fieldsOrder = formData.fieldsOrder as string[];
+        const fieldsSchema = formData.fieldsSchema as Record<
+          string,
+          FormFieldType
+        >;
         fieldsOrder.forEach((fieldId) => {
-          defaultValuesObject[fieldId] = "";
+          if (fieldsSchema[fieldId].field.type === "checkboxes") {
+            defaultValuesObject[fieldId] = [];
+          } else {
+            defaultValuesObject[fieldId] = "";
+          }
         });
       }
+      console.log(defaultValuesObject);
       return defaultValuesObject;
     }, [formData]),
     resolver: zodResolver(
       useMemo(() => {
         let validationSchema = z.object({});
         if (formData) {
-          console.log(formData);
           const fieldsSchema = formData.fieldsSchema as Record<
             string,
             FormFieldType
@@ -351,6 +360,82 @@ export default function Page() {
                                     />
                                   </PopoverContent>
                                 </Popover>
+                                <FormMessage />
+                              </FormItem>
+                            </FieldContainer>
+                          )}
+                        />
+                      );
+                    })
+                    .with("checkboxes", () => {
+                      invariant(formField.type === "checkboxes");
+                      return (
+                        <FormField
+                          control={form.control}
+                          key={fieldId}
+                          name={fieldId}
+                          render={() => (
+                            <FieldContainer
+                              isError={
+                                form.formState.errors[fieldId] !== undefined
+                              }
+                            >
+                              <FormItem className="space-y-3 px-6 pb-6">
+                                <FormLabel asChild>
+                                  <div className="text-sm flex space-x-1">
+                                    <div
+                                      className="text-gray-700"
+                                      dangerouslySetInnerHTML={{
+                                        __html: name,
+                                      }}
+                                    />
+                                    {required ? (
+                                      <span className="text-red-500">*</span>
+                                    ) : null}
+                                  </div>
+                                </FormLabel>
+                                {formField.options.map((item) => (
+                                  <FormField
+                                    key={item._id}
+                                    control={form.control}
+                                    name={fieldId}
+                                    render={({ field }) => {
+                                      if (!field.value) {
+                                        field.value = [];
+                                      }
+                                      return (
+                                        <FormItem
+                                          key={item._id}
+                                          className="flex flex-row items-start space-x-3 space-y-0"
+                                        >
+                                          <FormControl>
+                                            <Checkbox
+                                              checked={field.value?.includes(
+                                                item._id
+                                              )}
+                                              onCheckedChange={(checked) => {
+                                                return checked
+                                                  ? field.onChange([
+                                                      ...field.value,
+                                                      item._id,
+                                                    ])
+                                                  : field.onChange(
+                                                      field.value?.filter(
+                                                        (value: string) =>
+                                                          value !== item._id
+                                                      )
+                                                    );
+                                              }}
+                                            />
+                                          </FormControl>
+                                          <FormLabel className="font-normal">
+                                            {item.name}
+                                          </FormLabel>
+                                        </FormItem>
+                                      );
+                                    }}
+                                  />
+                                ))}
                                 <FormMessage />
                               </FormItem>
                             </FieldContainer>

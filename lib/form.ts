@@ -63,9 +63,7 @@ export const generateValidationSchema = (
         string,
         ...string[]
       ];
-      validation = z.array(
-        z.object({ name: z.enum(options), value: z.boolean() })
-      );
+      validation = z.array(z.string());
     } else if (field.type === "dropdown") {
       const options = field.options.map((item) => item.name) as [
         string,
@@ -181,7 +179,10 @@ export const generateInitialFieldData = (type: FieldType) => {
 
 export const submissionsDataConfig = z.array(
   z.object({
-    submission: z.record(z.string(), z.string().nullable()),
+    submission: z.record(
+      z.string(),
+      z.string().nullable().or(z.array(z.string()))
+    ),
     // submitted_at: z.date(),
   })
 );
