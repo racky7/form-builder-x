@@ -17,6 +17,16 @@ export function getUserForms(session: Session) {
         not: true,
       },
     },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      FormSubmission: {
+        select: {
+          id: true,
+        },
+      },
+    },
   });
 }
 

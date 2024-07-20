@@ -49,6 +49,7 @@ export default function FormsSection({
                     id={form.id}
                     name={form.name}
                     slug={form.slug}
+                    responses={form.FormSubmission.length}
                     className="col-span-12 md:col-span-6 lg:col-span-2"
                   />
                 ))}

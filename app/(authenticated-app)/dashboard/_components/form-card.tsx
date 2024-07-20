@@ -15,10 +15,17 @@ type FormCardProps = {
   id: string;
   name: string;
   slug: string;
+  responses: number;
   className: string;
 };
 
-export default function FormCard({ id, name, slug, className }: FormCardProps) {
+export default function FormCard({
+  id,
+  name,
+  slug,
+  responses,
+  className,
+}: FormCardProps) {
   const { toast } = useToast();
   const utils = trpc.useUtils();
   const deleteFormMutation = trpc.builder.deleteForm.useMutation({
@@ -45,9 +52,18 @@ export default function FormCard({ id, name, slug, className }: FormCardProps) {
       </Link>
       <div className="border-t border-gray-200 flex items-center justify-between py-4 px-1">
         <div>
-          <span className="text-xs mx-2 py-1 px-2 text-gray-400 cursor-default inline-block">
-            No responses
-          </span>
+          {responses === 0 ? (
+            <span className="text-xs mx-2 py-1 px-2 text-gray-400 cursor-default inline-block">
+              No responses
+            </span>
+          ) : (
+            <Link
+              href={`/form/${slug}/submissions`}
+              className="text-gray-500 inline-block mx-2 text-xs py-1 px-2 hover:bg-gray-200 rounded"
+            >
+              {responses} responses
+            </Link>
+          )}
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
