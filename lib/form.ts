@@ -9,7 +9,17 @@ const field = z.discriminatedUnion("type", [
     placeholder: z.string(),
   }),
   z.object({
-    type: z.literal("checkbox"),
+    type: z.literal("checkboxes"),
+    options: z
+      .array(
+        z.object({
+          _id: z.string(),
+          name: z.string(),
+          value: z.boolean(),
+          image: z.string().url().optional(),
+        })
+      )
+      .min(1),
   }),
   z.object({
     type: z.literal("number-input"),
@@ -48,8 +58,14 @@ export const generateValidationSchema = (
     if (field.type === "input") {
       validation =
         field.inputType === "short-input" ? z.string().max(255) : z.string();
-    } else if (field.type === "checkbox") {
-      validation = z.boolean();
+    } else if (field.type === "checkboxes") {
+      const options = field.options.map((item) => item.name) as [
+        string,
+        ...string[]
+      ];
+      validation = z.array(
+        z.object({ name: z.enum(options), value: z.boolean() })
+      );
     } else if (field.type === "dropdown") {
       const options = field.options.map((item) => item.name) as [
         string,
@@ -107,9 +123,13 @@ export const generateInitialFieldData = (type: FieldType) => {
     }
     case "checkbox": {
       initialData = {
-        name: "Checkbox",
+        name: "Checkboxes",
         field: {
-          type: "checkbox",
+          type: "checkboxes",
+          options: [
+            { _id: uid(), name: "Option 1", value: false },
+            { _id: uid(), name: "Option 2", value: false },
+          ],
         },
         required: false,
       };

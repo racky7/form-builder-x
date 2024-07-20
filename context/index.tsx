@@ -106,6 +106,7 @@ export const FormBuilderContextProvider = ({
     const currentFieldSchema = { ...fieldsSchema };
     delete currentFieldSchema[fieldId];
     setFieldsSchema(currentFieldSchema);
+    setFormSaveStatus("DRAFT");
   };
   const updateFormSaveStatus = (status: FormSaveStatus) => {
     setFormSaveStatus(status);

@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/tooltip";
 import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Calendar } from "@/components/ui/calendar";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 type DndDraggableProps = {
   attributes?: DraggableAttributes;
@@ -114,6 +116,26 @@ export default function FieldCard({
                   />
                 </SelectTrigger>
               </Select>
+            );
+          })
+          .with("checkboxes", () => {
+            invariant(field.type === "checkboxes");
+            return (
+              <div className="flex flex-col space-y-4">
+                {field.options.map((option) => {
+                  return (
+                    <div
+                      key={option._id}
+                      className="flex items-center space-x-2 pointer-events-none"
+                    >
+                      <Checkbox />
+                      <Label className="font-normal text-muted-foreground">
+                        {option.name}
+                      </Label>
+                    </div>
+                  );
+                })}
+              </div>
             );
           })
           .with("date", () => {

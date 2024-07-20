@@ -174,6 +174,100 @@ export default function FieldEditorPane() {
               </>
             );
           })
+          .with("checkboxes", () => {
+            invariant(field.type === "checkboxes");
+            return (
+              <>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <Label>Option</Label>
+                    <button
+                      onClick={() => {
+                        updateFieldSchema(activeField, {
+                          field: {
+                            ...field,
+                            options: [
+                              {
+                                _id: uid(),
+                                name: "Option",
+                                value: false,
+                              },
+                            ],
+                          },
+                        });
+                      }}
+                    >
+                      <CirclePlusIcon className="h-4 w-4" />
+                    </button>
+                  </div>
+                  {field.options.length === 0 ? (
+                    <div>No options added.</div>
+                  ) : (
+                    field.options.map((item) => {
+                      return (
+                        <div
+                          className="flex h-9 items-center bg-white"
+                          key={item._id}
+                        >
+                          <Input
+                            value={item.name}
+                            className="rounded-r-none focus-within:ring-gray-500 focus-within:border-gray-500"
+                            onChange={(event) => {
+                              const updatedValue = event.target.value;
+                              if (typeof updatedValue === "undefined") {
+                                return;
+                              }
+                              const updatedOptions = field.options.map(
+                                (option) => {
+                                  if (option._id === item._id) {
+                                    return {
+                                      ...option,
+                                      name: updatedValue,
+                                    };
+                                  }
+                                  return option;
+                                }
+                              );
+                              updateFieldSchema(
+                                activeField,
+                                {
+                                  field: {
+                                    ...field,
+                                    options: updatedOptions,
+                                  },
+                                },
+                                "replace"
+                              );
+                            }}
+                          />
+                          <button
+                            className="py-1 px-3 border border-input border-l-0 rounded-r-md h-full"
+                            onClick={() => {
+                              const updatedOptions = field.options.filter(
+                                (option) => option._id !== item._id
+                              );
+                              updateFieldSchema(
+                                activeField,
+                                {
+                                  field: {
+                                    ...field,
+                                    options: updatedOptions,
+                                  },
+                                },
+                                "replace"
+                              );
+                            }}
+                          >
+                            <Trash2Icon className="h-4 w-4" />
+                          </button>
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
+              </>
+            );
+          })
           .with(P._, () => null)
           .exhaustive()}
 

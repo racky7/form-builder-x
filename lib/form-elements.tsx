@@ -50,7 +50,7 @@ export const FORM_FIELD_CONFIG: Record<FieldType, FieldConfig> = {
   checkbox: {
     type: "checkbox",
     icon: <SquareCheckIcon className="h-6 w-6" />,
-    name: "Checkbox",
+    name: "Checkboxes",
   },
   "number-input": {
     type: "number-input",
