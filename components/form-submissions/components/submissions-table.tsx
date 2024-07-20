@@ -16,6 +16,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useFormBuilderContext } from "@/context";
+import { format } from "date-fns";
 
 type SingleSubmission = {
   [fieldId: string]: string | string[] | null;
@@ -32,9 +33,27 @@ export default function SubmissionsTable({
   const columns: ColumnDef<SingleSubmission>[] = fieldsOrder.map((fieldId) => {
     const element = document.createElement("div");
     element.innerHTML = fieldsSchema[fieldId].name;
+    const fieldData = fieldsSchema[fieldId].field;
     return {
       header: element.innerText,
       accessorKey: fieldId,
+      cell: (info) => {
+        if (fieldData.type === "date") {
+          return format(info.getValue() as Date, "PPP");
+        }
+
+        if (fieldData.type === "checkboxes") {
+          const optionIds = info.getValue() as string[];
+          return optionIds
+            ?.map((optionId) => {
+              return fieldData.options.find((item) => item._id === optionId)
+                ?.name;
+            })
+            .join(", ");
+        }
+
+        return info.getValue();
+      },
     };
   });
 
