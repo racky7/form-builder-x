@@ -17,6 +17,8 @@ type FormCardProps = {
   slug: string;
   responses: number;
   className: string;
+  onDelete: () => void;
+  onRename: () => void;
 };
 
 export default function FormCard({
@@ -25,18 +27,9 @@ export default function FormCard({
   slug,
   responses,
   className,
+  onDelete,
+  onRename,
 }: FormCardProps) {
-  const { toast } = useToast();
-  const utils = trpc.useUtils();
-  const deleteFormMutation = trpc.builder.deleteForm.useMutation({
-    onSuccess: () => {
-      utils.builder.getUserForms.invalidate();
-      toast({
-        title: "Form Deleted Successfully",
-      });
-    },
-  });
-
   return (
     <div
       className={cn(
@@ -73,14 +66,19 @@ export default function FormCard({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="start">
             <DropdownMenuItem
-              disabled={deleteFormMutation.isLoading}
               onClick={() => {
-                deleteFormMutation.mutate({ id });
+                onDelete?.();
               }}
             >
               Delete
             </DropdownMenuItem>
-            <DropdownMenuItem>Rename</DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                onRename?.();
+              }}
+            >
+              Rename
+            </DropdownMenuItem>
             <DropdownMenuItem>Duplicate</DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={`/forms/${slug}`} target="_blank">
