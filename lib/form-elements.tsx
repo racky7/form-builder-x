@@ -13,7 +13,6 @@ export const fieldType = z.enum([
   "short-input",
   "long-input",
   "checkbox",
-  "number-input",
   "dropdown",
   "date",
   //   "dateTime",
@@ -31,7 +30,6 @@ export const FORM_FIELD_ITEMS: FieldType[] = [
   "short-input",
   "long-input",
   "checkbox",
-  "number-input",
   "dropdown",
   "date",
 ];
@@ -51,11 +49,6 @@ export const FORM_FIELD_CONFIG: Record<FieldType, FieldConfig> = {
     type: "checkbox",
     icon: <SquareCheckIcon className="h-6 w-6" />,
     name: "Checkboxes",
-  },
-  "number-input": {
-    type: "number-input",
-    icon: <HashIcon className="h-6 w-6" />,
-    name: "Number",
   },
   dropdown: {
     type: "dropdown",

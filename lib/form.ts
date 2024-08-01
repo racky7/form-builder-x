@@ -22,12 +22,6 @@ const field = z.discriminatedUnion("type", [
       .min(1),
   }),
   z.object({
-    type: z.literal("number-input"),
-    min: z.number().optional(),
-    max: z.number().optional(),
-    placeholder: z.string(),
-  }),
-  z.object({
     type: z.literal("dropdown"),
     options: z.array(z.object({ _id: z.string(), name: z.string() })).min(1),
     placeholder: z.string(),
@@ -70,14 +64,6 @@ export const generateValidationSchema = (
         ...string[]
       ];
       validation = z.enum(options);
-    } else if (field.type === "number-input") {
-      validation = z.number();
-      if (typeof field.min === "number") {
-        validation = validation.min(field.min);
-      }
-      if (typeof field.max === "number") {
-        validation = validation.max(field.max);
-      }
     } else if (field.type === "date") {
       validation = z.date();
     }
@@ -128,17 +114,6 @@ export const generateInitialFieldData = (type: FieldType) => {
             { _id: uid(), name: "Option 1", value: false },
             { _id: uid(), name: "Option 2", value: false },
           ],
-        },
-        required: false,
-      };
-      break;
-    }
-    case "number-input": {
-      initialData = {
-        name: "Number",
-        field: {
-          type: "number-input",
-          placeholder: "1234567890",
         },
         required: false,
       };

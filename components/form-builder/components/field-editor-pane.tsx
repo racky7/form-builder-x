@@ -52,7 +52,7 @@ export default function FieldEditorPane() {
             return (
               <>
                 <div className="space-y-2">
-                  <Label>Placeholder</Label>
+                  <Label>Placeholder Text</Label>
                   <Input
                     value={field.placeholder}
                     className="focus-within:ring-gray-500 focus-within:border-gray-500"
@@ -73,7 +73,7 @@ export default function FieldEditorPane() {
             return (
               <>
                 <div className="space-y-2">
-                  <Label>Placeholder</Label>
+                  <Label>Placeholder Text</Label>
                   <Input
                     value={field.placeholder}
                     className="focus-within:ring-gray-500 focus-within:border-gray-500"
