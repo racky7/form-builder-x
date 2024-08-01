@@ -73,7 +73,6 @@ export default function Page() {
           }
         });
       }
-      console.log(defaultValuesObject);
       return defaultValuesObject;
     }, [formData]),
     resolver: zodResolver(
@@ -92,7 +91,6 @@ export default function Page() {
   });
 
   const onSubmit = (values: any) => {
-    console.log(values);
     collectFormDataMutation.mutate({
       formId: formData?.id!,
       submission: values,

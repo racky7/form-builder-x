@@ -79,9 +79,13 @@ export default function FieldEditorPane() {
                     className="focus-within:ring-gray-500 focus-within:border-gray-500"
                     onChange={(event) => {
                       const updatedValue = event.target.value;
-                      updateFieldSchema(activeField, {
-                        field: { ...field, placeholder: updatedValue },
-                      });
+                      updateFieldSchema(
+                        activeField,
+                        {
+                          field: { ...field, placeholder: updatedValue },
+                        },
+                        "replace"
+                      );
                     }}
                   />
                 </div>

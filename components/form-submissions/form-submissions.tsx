@@ -35,7 +35,6 @@ export default function FormSubmissions() {
                 return <div>Error</div>;
               })
               .with({ status: "success" }, ({ data }) => {
-                console.log(data);
                 const submissionsData = submissionsDataConfig
                   .parse(data)
                   .map((data) => {
