@@ -29,8 +29,7 @@ export default function FormsSection({
   const [selectedForm, setSelectedForm] = useState<{
     id: string;
     name: string;
-    slug: string;
-  }>({ id: "", name: "", slug: "" });
+  }>({ id: "", name: "" });
 
   const handleRenameFormModal = (value: boolean) => {
     setShowRenameFormModal(value);
@@ -81,7 +80,6 @@ export default function FormsSection({
                       setSelectedForm({
                         id: form.id,
                         name: form.name,
-                        slug: form.slug,
                       });
                       handleRenameFormModal(true);
                     }}

@@ -77,13 +77,13 @@ export default function FormCard({
             >
               Rename
             </DropdownMenuItem>
-            <DropdownMenuItem>Duplicate</DropdownMenuItem>
+            <DropdownMenuItem disabled>Duplicate</DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={`/forms/${slug}`} target="_blank">
                 Open Form Page
               </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Copy Form Link</DropdownMenuItem>
+            <DropdownMenuItem disabled>Copy Form Link</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

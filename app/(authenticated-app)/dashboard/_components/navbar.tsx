@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import Avatar from "boring-avatars";
 import {
   DropdownMenu,
@@ -26,7 +25,6 @@ export default function Navbar({
           <div className="text-2xl font-semibold text-primary">
             FormBuilderX
           </div>
-
           <DropdownMenu>
             <DropdownMenuTrigger className="rounded-full p-[2px]">
               <Avatar
@@ -51,15 +49,6 @@ export default function Navbar({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          {/* <form
-        action={async () => {
-          "use server";
-          await signOut();
-        }}
-      >
-        <Button type="submit">Sign out</Button>
-      </form> */}
         </div>
       </div>
     </nav>
