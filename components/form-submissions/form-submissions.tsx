@@ -5,9 +5,11 @@ import SubmissionsTable from "./components/submissions-table";
 import { match } from "ts-pattern";
 import { useParams } from "next/navigation";
 import { submissionsDataConfig } from "@/lib/form";
+import { useFormBuilderContext } from "@/context";
 
 export default function FormSubmissions() {
   const params = useParams<{ formSlug: string }>();
+  const { formName } = useFormBuilderContext();
   const getFormSubmissionsQuery =
     trpc.formSubmission.getFormSubmissions.useQuery({
       formSlug: params.formSlug,
@@ -19,7 +21,7 @@ export default function FormSubmissions() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 md:flex items-center justify-between">
           <div className="flex items-center col-span-1">
             <h1 className="truncate pr-2 leading-tight tracking-tight text-gray-700">
-              Submissions of XYZ Form
+              Submissions of {formName}
             </h1>
           </div>
           <div></div>
