@@ -63,6 +63,8 @@ model Form {
   saveStatus     SaveStatus       @default(DRAFT)
   isDeleted      Boolean          @default(false)
   FormSubmission FormSubmission[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
 }
 
 model FormSubmission {
@@ -71,4 +73,6 @@ model FormSubmission {
   formId       String   @db.ObjectId
   submission   Json     @default("{}")
   submitted_at DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
