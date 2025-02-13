@@ -69,7 +69,6 @@ export default function FieldEditorPane() {
           })
           .with("dropdown", () => {
             invariant(field.type === "dropdown");
-            console.log(field);
             return (
               <>
                 <div className="space-y-2">

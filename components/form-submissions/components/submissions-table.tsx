@@ -39,7 +39,8 @@ export default function SubmissionsTable({
       accessorKey: fieldId,
       cell: (info) => {
         if (fieldData.type === "date") {
-          return format(info.getValue() as Date, "PPP");
+          const dateValue = info.getValue() as Date | null;
+          return dateValue ? format(dateValue, "PPP") : "";
         }
 
         if (fieldData.type === "checkboxes") {
